@@ -1,0 +1,21 @@
+{
+  "routes": [
+    {
+      "path": "/",
+      "page": "index",
+      "routeType": "page",
+      "layout": "main"
+    },
+    {
+      "path": "/register",
+      "page": "register",
+      "layout": "main",
+      "exec": ""
+    },
+    {
+      "path": "/termsandconditions",
+      "page": "termsandconditions",
+      "layout": "main"
+    }
+  ]
+}
