@@ -26,6 +26,16 @@
       "path": "/login",
       "page": "login",
       "layout": "main"
+    },
+    {
+      "path": "/cwadmin",
+      "page": "cwadmin/adminhome",
+      "layout": "admin"
     }
-  ]
+  ],
+  "layouts": {
+    "admin": {
+      "exec": "/api/security/isadmin"
+    }
+  }
 }
