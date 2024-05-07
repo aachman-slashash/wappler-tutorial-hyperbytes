@@ -21,6 +21,11 @@
       "path": "/validate-account",
       "page": "validate-account",
       "layout": "main"
+    },
+    {
+      "path": "/login",
+      "page": "login",
+      "layout": "main"
     }
   ]
 }

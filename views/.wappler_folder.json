@@ -14,5 +14,9 @@
   "validate-account.ejs": {
     "layoutPage": "main",
     "description": ""
+  },
+  "login.ejs": {
+    "layoutPage": "main",
+    "description": ""
   }
 }
