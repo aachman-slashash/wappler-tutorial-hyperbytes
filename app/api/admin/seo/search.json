@@ -1,0 +1,139 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "sort"
+      },
+      {
+        "type": "text",
+        "name": "dir"
+      },
+      {
+        "type": "text",
+        "name": "filter"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "",
+        "module": "auth",
+        "action": "restrict",
+        "options": {
+          "provider": "commweb",
+          "permissions": [
+            "Administrator"
+          ],
+          "loginUrl": "/login",
+          "forbiddenUrl": "/login"
+        }
+      },
+      {
+        "name": "query",
+        "module": "dbconnector",
+        "action": "select",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "select",
+            "columns": [
+              {
+                "table": "seo",
+                "column": "*"
+              }
+            ],
+            "params": [],
+            "table": {
+              "name": "seo"
+            },
+            "primary": "seo_id",
+            "joins": [],
+            "query": "select * from `seo`"
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "type": "number",
+            "name": "seo_id"
+          },
+          {
+            "type": "text",
+            "name": "pagename"
+          },
+          {
+            "type": "text",
+            "name": "description"
+          },
+          {
+            "type": "text",
+            "name": "keywords"
+          },
+          {
+            "type": "text",
+            "name": "title"
+          },
+          {
+            "type": "text",
+            "name": "canonical"
+          },
+          {
+            "type": "text",
+            "name": "robots"
+          },
+          {
+            "type": "text",
+            "name": "og_title"
+          },
+          {
+            "type": "text",
+            "name": "og_type"
+          },
+          {
+            "type": "text",
+            "name": "og_description"
+          },
+          {
+            "type": "text",
+            "name": "og_sitename"
+          },
+          {
+            "type": "text",
+            "name": "og_image"
+          },
+          {
+            "type": "text",
+            "name": "og_url"
+          },
+          {
+            "type": "text",
+            "name": "twitter_title"
+          },
+          {
+            "type": "text",
+            "name": "twitter_description"
+          },
+          {
+            "type": "text",
+            "name": "twitter_image"
+          },
+          {
+            "type": "text",
+            "name": "twitter_site"
+          },
+          {
+            "type": "text",
+            "name": "twitter_creator"
+          },
+          {
+            "type": "text",
+            "name": "twitter_url"
+          }
+        ],
+        "outputType": "array"
+      }
+    ]
+  }
+}
