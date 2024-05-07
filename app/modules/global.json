@@ -1,0 +1,562 @@
+{
+  "meta": {
+    "$_POST": [
+      {
+        "type": "text",
+        "name": "robots"
+      },
+      {
+        "type": "text",
+        "name": "og_image"
+      },
+      {
+        "type": "text",
+        "name": "twitter_image"
+      },
+      {
+        "type": "text",
+        "name": "twitter_site"
+      },
+      {
+        "type": "text",
+        "name": "twitter_creator"
+      },
+      {
+        "type": "text",
+        "name": "twitter_url"
+      }
+    ],
+    "$_SERVER": [
+      {
+        "type": "text",
+        "name": "URL"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "urlsplit",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{$_SERVER.URL.split('/')}}"
+        },
+        "meta": [],
+        "outputType": "text"
+      },
+      {
+        "name": "",
+        "module": "core",
+        "action": "condition",
+        "options": {
+          "if": "{{urlsplit[1]!='api'}}",
+          "then": {
+            "steps": [
+              {
+                "name": "query_global_seo",
+                "module": "dbconnector",
+                "action": "single",
+                "options": {
+                  "connection": "db",
+                  "sql": {
+                    "type": "select",
+                    "columns": [
+                      {
+                        "table": "seo",
+                        "column": "*"
+                      }
+                    ],
+                    "params": [
+                      {
+                        "operator": "equal",
+                        "type": "expression",
+                        "name": ":P1",
+                        "value": "{{$_SERVER.URL}}",
+                        "test": ""
+                      }
+                    ],
+                    "table": {
+                      "name": "seo"
+                    },
+                    "primary": "seo_id",
+                    "joins": [],
+                    "wheres": {
+                      "condition": "AND",
+                      "rules": [
+                        {
+                          "id": "seo.pagename",
+                          "field": "seo.pagename",
+                          "type": "string",
+                          "operator": "equal",
+                          "value": "{{$_SERVER.URL}}",
+                          "data": {
+                            "table": "seo",
+                            "column": "pagename",
+                            "type": "text",
+                            "columnObj": {
+                              "type": "string",
+                              "maxLength": 255,
+                              "primary": false,
+                              "unique": false,
+                              "nullable": true,
+                              "name": "pagename"
+                            }
+                          },
+                          "operation": "="
+                        }
+                      ],
+                      "conditional": null,
+                      "valid": true
+                    },
+                    "query": "select * from `seo` where `seo`.`pagename` = ?"
+                  }
+                },
+                "output": true,
+                "meta": [
+                  {
+                    "type": "number",
+                    "name": "seo_id"
+                  },
+                  {
+                    "type": "text",
+                    "name": "pagename"
+                  },
+                  {
+                    "type": "text",
+                    "name": "description"
+                  },
+                  {
+                    "type": "text",
+                    "name": "keywords"
+                  },
+                  {
+                    "type": "text",
+                    "name": "title"
+                  },
+                  {
+                    "type": "text",
+                    "name": "canonical"
+                  },
+                  {
+                    "type": "text",
+                    "name": "robots"
+                  },
+                  {
+                    "type": "text",
+                    "name": "og_title"
+                  },
+                  {
+                    "type": "text",
+                    "name": "og_type"
+                  },
+                  {
+                    "type": "text",
+                    "name": "og_description"
+                  },
+                  {
+                    "type": "text",
+                    "name": "og_sitename"
+                  },
+                  {
+                    "type": "text",
+                    "name": "og_image"
+                  },
+                  {
+                    "type": "text",
+                    "name": "og_url"
+                  },
+                  {
+                    "type": "text",
+                    "name": "twitter_title"
+                  },
+                  {
+                    "type": "text",
+                    "name": "twitter_description"
+                  },
+                  {
+                    "type": "text",
+                    "name": "twitter_image"
+                  },
+                  {
+                    "type": "text",
+                    "name": "twitter_site"
+                  },
+                  {
+                    "type": "text",
+                    "name": "twitter_creator"
+                  },
+                  {
+                    "type": "text",
+                    "name": "twitter_url"
+                  }
+                ],
+                "outputType": "object"
+              },
+              {
+                "name": "",
+                "module": "core",
+                "action": "condition",
+                "options": {
+                  "if": "{{query_global_seo}}",
+                  "then": {
+                    "steps": {
+                      "name": "",
+                      "options": {
+                        "comment": "Have tags\n"
+                      }
+                    }
+                  },
+                  "else": {
+                    "steps": [
+                      {
+                        "name": "insert",
+                        "module": "dbupdater",
+                        "action": "insert",
+                        "options": {
+                          "connection": "db",
+                          "sql": {
+                            "type": "insert",
+                            "values": [
+                              {
+                                "table": "seo",
+                                "column": "pagename",
+                                "type": "text",
+                                "value": "{{$_SERVER.URL}}",
+                                "recid": 1
+                              },
+                              {
+                                "table": "seo",
+                                "column": "description",
+                                "type": "text",
+                                "value": "Visite South Tyne",
+                                "recid": 2
+                              },
+                              {
+                                "table": "seo",
+                                "column": "keywords",
+                                "type": "text",
+                                "value": "Visite South Tyne",
+                                "recid": 3
+                              },
+                              {
+                                "table": "seo",
+                                "column": "title",
+                                "type": "text",
+                                "value": "Visite South Tyne",
+                                "recid": 4
+                              },
+                              {
+                                "table": "seo",
+                                "column": "canonical",
+                                "type": "text",
+                                "value": "{{'http://localhost:3000'+$_SERVER.URL}}",
+                                "recid": 5
+                              },
+                              {
+                                "table": "seo",
+                                "column": "robots",
+                                "type": "text",
+                                "value": "{{$_POST.robots}}",
+                                "recid": 6
+                              },
+                              {
+                                "table": "seo",
+                                "column": "og_title",
+                                "type": "text",
+                                "value": "Visite South Tyne",
+                                "recid": 7
+                              },
+                              {
+                                "table": "seo",
+                                "column": "og_type",
+                                "type": "text",
+                                "value": "Website",
+                                "recid": 8
+                              },
+                              {
+                                "table": "seo",
+                                "column": "og_description",
+                                "type": "text",
+                                "value": "Visite South Tyne",
+                                "recid": 9
+                              },
+                              {
+                                "table": "seo",
+                                "column": "og_sitename",
+                                "type": "text",
+                                "value": "example.com",
+                                "recid": 10
+                              },
+                              {
+                                "table": "seo",
+                                "column": "og_image",
+                                "type": "text",
+                                "value": "http://localhost:3000/assets/images/test-logo-sq.png",
+                                "recid": 11
+                              },
+                              {
+                                "table": "seo",
+                                "column": "og_url",
+                                "type": "text",
+                                "value": "{{'http://localhost:3000'+$_SERVER.URL}}",
+                                "recid": 12
+                              },
+                              {
+                                "table": "seo",
+                                "column": "twitter_title",
+                                "type": "text",
+                                "value": "Visite South Tyne",
+                                "recid": 13
+                              },
+                              {
+                                "table": "seo",
+                                "column": "twitter_description",
+                                "type": "text",
+                                "value": "Visite South Tyne",
+                                "recid": 14
+                              },
+                              {
+                                "table": "seo",
+                                "column": "twitter_image",
+                                "type": "text",
+                                "value": "http://localhost:3000/assets/images/test-logo-sq.png",
+                                "recid": 15
+                              },
+                              {
+                                "table": "seo",
+                                "column": "twitter_site",
+                                "type": "text",
+                                "value": "{{$_POST.twitter_site}}",
+                                "recid": 16
+                              },
+                              {
+                                "table": "seo",
+                                "column": "twitter_creator",
+                                "type": "text",
+                                "value": "{{$_POST.twitter_creator}}",
+                                "recid": 17
+                              },
+                              {
+                                "table": "seo",
+                                "column": "twitter_url",
+                                "type": "text",
+                                "value": "{{'http://localhost:3000'+$_SERVER.URL}}",
+                                "recid": 18
+                              }
+                            ],
+                            "table": "seo",
+                            "returning": "seo_id",
+                            "query": "insert into `seo` (`canonical`, `description`, `keywords`, `og_description`, `og_image`, `og_sitename`, `og_title`, `og_type`, `og_url`, `pagename`, `robots`, `title`, `twitter_creator`, `twitter_description`, `twitter_image`, `twitter_site`, `twitter_title`, `twitter_url`) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) returning `seo_id`",
+                            "params": [
+                              {
+                                "name": ":P1",
+                                "type": "expression",
+                                "value": "{{$_SERVER.URL}}",
+                                "test": ""
+                              },
+                              {
+                                "name": ":P2",
+                                "type": "expression",
+                                "value": "{{'http://localhost:3000'+$_SERVER.URL}}",
+                                "test": ""
+                              },
+                              {
+                                "name": ":P3",
+                                "type": "expression",
+                                "value": "{{$_POST.robots}}",
+                                "test": ""
+                              },
+                              {
+                                "name": ":P4",
+                                "type": "expression",
+                                "value": "{{'http://localhost:3000'+$_SERVER.URL}}",
+                                "test": ""
+                              },
+                              {
+                                "name": ":P5",
+                                "type": "expression",
+                                "value": "{{$_POST.twitter_site}}",
+                                "test": ""
+                              },
+                              {
+                                "name": ":P6",
+                                "type": "expression",
+                                "value": "{{$_POST.twitter_creator}}",
+                                "test": ""
+                              },
+                              {
+                                "name": ":P7",
+                                "type": "expression",
+                                "value": "{{'http://localhost:3000'+$_SERVER.URL}}",
+                                "test": ""
+                              }
+                            ]
+                          }
+                        },
+                        "meta": [
+                          {
+                            "name": "identity",
+                            "type": "text"
+                          },
+                          {
+                            "name": "affected",
+                            "type": "number"
+                          }
+                        ]
+                      },
+                      {
+                        "name": "query_global_seo1",
+                        "module": "dbconnector",
+                        "action": "single",
+                        "options": {
+                          "connection": "db",
+                          "sql": {
+                            "type": "select",
+                            "columns": [
+                              {
+                                "table": "seo",
+                                "column": "*",
+                                "recid": 1
+                              }
+                            ],
+                            "params": [
+                              {
+                                "operator": "equal",
+                                "type": "expression",
+                                "name": ":P1",
+                                "value": "{{$_SERVER.URL}}",
+                                "test": ""
+                              }
+                            ],
+                            "table": {
+                              "name": "seo"
+                            },
+                            "primary": "seo_id",
+                            "joins": [],
+                            "wheres": {
+                              "condition": "AND",
+                              "rules": [
+                                {
+                                  "id": "seo.pagename",
+                                  "field": "seo.pagename",
+                                  "type": "string",
+                                  "operator": "equal",
+                                  "value": "{{$_SERVER.URL}}",
+                                  "data": {
+                                    "table": "seo",
+                                    "column": "pagename",
+                                    "type": "text",
+                                    "columnObj": {
+                                      "type": "string",
+                                      "maxLength": 255,
+                                      "primary": false,
+                                      "unique": false,
+                                      "nullable": true,
+                                      "name": "pagename"
+                                    }
+                                  },
+                                  "operation": "="
+                                }
+                              ],
+                              "conditional": null,
+                              "valid": true
+                            },
+                            "query": "select * from `seo` where `seo`.`pagename` = ?"
+                          }
+                        },
+                        "output": true,
+                        "meta": [
+                          {
+                            "type": "number",
+                            "name": "seo_id"
+                          },
+                          {
+                            "type": "text",
+                            "name": "pagename"
+                          },
+                          {
+                            "type": "text",
+                            "name": "description"
+                          },
+                          {
+                            "type": "text",
+                            "name": "keywords"
+                          },
+                          {
+                            "type": "text",
+                            "name": "title"
+                          },
+                          {
+                            "type": "text",
+                            "name": "canonical"
+                          },
+                          {
+                            "type": "text",
+                            "name": "robots"
+                          },
+                          {
+                            "type": "text",
+                            "name": "og_title"
+                          },
+                          {
+                            "type": "text",
+                            "name": "og_type"
+                          },
+                          {
+                            "type": "text",
+                            "name": "og_description"
+                          },
+                          {
+                            "type": "text",
+                            "name": "og_sitename"
+                          },
+                          {
+                            "type": "text",
+                            "name": "og_image"
+                          },
+                          {
+                            "type": "text",
+                            "name": "og_url"
+                          },
+                          {
+                            "type": "text",
+                            "name": "twitter_title"
+                          },
+                          {
+                            "type": "text",
+                            "name": "twitter_description"
+                          },
+                          {
+                            "type": "text",
+                            "name": "twitter_image"
+                          },
+                          {
+                            "type": "text",
+                            "name": "twitter_site"
+                          },
+                          {
+                            "type": "text",
+                            "name": "twitter_creator"
+                          },
+                          {
+                            "type": "text",
+                            "name": "twitter_url"
+                          }
+                        ],
+                        "outputType": "object"
+                      }
+                    ]
+                  }
+                },
+                "outputType": "boolean",
+                "output": true
+              }
+            ]
+          }
+        },
+        "outputType": "boolean"
+      }
+    ]
+  }
+}

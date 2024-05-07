@@ -110,6 +110,181 @@
           }
         },
         "db": {}
+      },
+      "seo": {
+        "columns": {
+          "seo_id": {
+            "db": {
+              "type": "increments",
+              "primary": true,
+              "unique": false,
+              "nullable": false
+            }
+          },
+          "pagename": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "description": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "keywords": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "title": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "canonical": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "robots": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "og_title": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "og_type": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "og_description": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "og_sitename": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "og_image": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "og_url": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "twitter_title": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "twitter_description": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "twitter_image": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "twitter_site": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "twitter_creator": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "twitter_url": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          }
+        },
+        "db": {}
       }
     },
     "views": {}
