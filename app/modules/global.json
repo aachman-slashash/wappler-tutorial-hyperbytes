@@ -406,7 +406,7 @@
                         ]
                       },
                       {
-                        "name": "query_global_seo1",
+                        "name": "query_global_seo",
                         "module": "dbconnector",
                         "action": "single",
                         "options": {
