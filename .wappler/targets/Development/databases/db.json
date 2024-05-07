@@ -59,6 +59,23 @@
               "unique": false,
               "nullable": true
             }
+          },
+          "authcode": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "validated": {
+            "db": {
+              "type": "datetime",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
           }
         },
         "db": {}

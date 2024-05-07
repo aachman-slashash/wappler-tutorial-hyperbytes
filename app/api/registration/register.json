@@ -244,6 +244,167 @@
         ]
       },
       {
+        "name": "saltcode",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "0,1,2,3,4,5,6,7,8,9,A,B,@"
+        },
+        "meta": [],
+        "outputType": "text"
+      },
+      {
+        "name": "codearray",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{saltcode.split(',')}}"
+        },
+        "meta": [],
+        "outputType": "text"
+      },
+      {
+        "name": "randomarray",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "key": "g_randomarray",
+          "value": "{{codearray.randomize()}}"
+        },
+        "meta": [],
+        "outputType": "text"
+      },
+      {
+        "name": "mycode",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "key": "g_mycode"
+        },
+        "meta": [],
+        "outputType": "text",
+        "output": true
+      },
+      {
+        "name": "repeat",
+        "module": "core",
+        "action": "repeat",
+        "options": {
+          "repeat": 6,
+          "outputFields": [],
+          "exec": {
+            "steps": {
+              "name": "mycode",
+              "module": "core",
+              "action": "setvalue",
+              "options": {
+                "value": "{{g_mycode+randomarray[$index]}}",
+                "key": "g_mycode"
+              },
+              "meta": [],
+              "outputType": "text"
+            }
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "name": "$index",
+            "type": "number"
+          },
+          {
+            "name": "$number",
+            "type": "number"
+          },
+          {
+            "name": "$name",
+            "type": "text"
+          },
+          {
+            "name": "$value",
+            "type": "object"
+          }
+        ],
+        "outputType": "array"
+      },
+      {
+        "name": "update",
+        "module": "dbupdater",
+        "action": "update",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "update",
+            "values": [
+              {
+                "table": "user",
+                "column": "authcode",
+                "type": "text",
+                "value": "{{g_mycode}}",
+                "recid": 1
+              }
+            ],
+            "table": "user",
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "user_id",
+                  "field": "user_id",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{i_user.identity}}",
+                  "data": {
+                    "column": "user_id"
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "returning": "user_id",
+            "query": "update `user` set `authcode` = ? where `user_id` = ?",
+            "params": [
+              {
+                "name": ":P1",
+                "type": "expression",
+                "value": "{{g_mycode}}",
+                "test": ""
+              },
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P2",
+                "value": "{{i_user.identity}}",
+                "test": ""
+              }
+            ]
+          }
+        },
+        "meta": [
+          {
+            "name": "affected",
+            "type": "number"
+          }
+        ]
+      },
+      {
+        "name": "",
+        "module": "mail",
+        "action": "send",
+        "options": {
+          "instance": "smtp",
+          "subject": "Your Authorisation Code",
+          "fromName": "Website",
+          "fromEmail": "noreply@example.com",
+          "toName": "{{$_POST.first_name+' '+$_POST.last_name}}",
+          "toEmail": "{{$_POST.email}}",
+          "body": "Your authorization code is: {{g_mycode}} "
+        },
+        "disabled": true
+      },
+      {
         "name": "i_user_role",
         "module": "dbupdater",
         "action": "insert",
@@ -288,7 +449,8 @@
             "type": "number"
           }
         ],
-        "output": false
+        "output": false,
+        "disabled": true
       },
       {
         "name": "success",
@@ -296,7 +458,7 @@
         "action": "response",
         "options": {
           "status": 201,
-          "data": "{{'Created user '+i_user_role.identity}}"
+          "data": "{{'Created user '+i_user.identity}}"
         }
       }
     ]
