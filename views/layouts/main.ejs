@@ -1,26 +1,60 @@
 <!doctype html>
 <html>
-<head>
-<base href="/">
-<script src="/dmxAppConnect/dmxAppConnect.js"></script>
-<meta charset="UTF-8">
-<title>Untitled Document</title>
 
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css" integrity="sha384-HzLeBuhoNPvSl5KYnjx0BT+WB0QEEqLprO+NBkkk5gbc67FTaL7XIGa2w1L0Xbgc" crossorigin="anonymous" />
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link rel="stylesheet" href="/bootstrap/5/css/bootstrap.min.css" />
-<link rel="stylesheet" href="/css/style.css" />
-<script src="/dmxAppConnect/dmxRouting/dmxRouting.js" defer></script>
-<link rel="stylesheet" href="/dmxAppConnect/dmxValidator/dmxValidator.css" />
-<script src="/dmxAppConnect/dmxValidator/dmxValidator.js" defer></script>
-<link rel="stylesheet" href="/dmxAppConnect/dmxNotifications/dmxNotifications.css" />
-<script src="/dmxAppConnect/dmxNotifications/dmxNotifications.js" defer></script>
-<script src="/dmxAppConnect/dmxBrowser/dmxBrowser.js" defer></script>
+<head>
+  <base href="/">
+  <script src="/dmxAppConnect/dmxAppConnect.js"></script>
+  <meta charset="UTF-8">
+  <title>Untitled Document</title>
+
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css" integrity="sha384-HzLeBuhoNPvSl5KYnjx0BT+WB0QEEqLprO+NBkkk5gbc67FTaL7XIGa2w1L0Xbgc" crossorigin="anonymous" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="/bootstrap/5/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="/css/style.css" />
+  <script src="/dmxAppConnect/dmxRouting/dmxRouting.js" defer></script>
+  <link rel="stylesheet" href="/dmxAppConnect/dmxValidator/dmxValidator.css" />
+  <script src="/dmxAppConnect/dmxValidator/dmxValidator.js" defer></script>
+  <link rel="stylesheet" href="/dmxAppConnect/dmxNotifications/dmxNotifications.css" />
+  <script src="/dmxAppConnect/dmxNotifications/dmxNotifications.js" defer></script>
+  <script src="/dmxAppConnect/dmxBrowser/dmxBrowser.js" defer></script>
+  <script src="/dmxAppConnect/dmxBootstrap5Navigation/dmxBootstrap5Navigation.js" defer></script>
+  <script src="/dmxAppConnect/dmxFormatter/dmxFormatter.js" defer></script>
+  <script src="/dmxAppConnect/dmxBootbox5/bootstrap-modbox.min.js" defer></script>
+  <script src="/dmxAppConnect/dmxBootbox5/dmxBootbox5.js" defer></script>
 </head>
+
 <body is="dmx-app" id="main">
-<div is="dmx-view" id="content">
-  <%- await include(content, locals); %>
-</div>
-<script src="/bootstrap/5/js/bootstrap.bundle.min.js"></script>
+  <div is="dmx-browser" id="browser1"></div>
+  <dmx-serverconnect id="conn_layout_whoami" url="/api/registration/whoami"></dmx-serverconnect>
+  <header>
+    <nav class="navbar navbar-expand-lg">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">Visit South Tyne</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar1_collapse" aria-controls="navbar1_collapse" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbar1_collapse">
+          <div class="navbar-nav">
+            <a class="nav-item nav-link active" href="#">Home</a>
+            <a class="nav-item nav-link" href="#">Link</a>
+            <div class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" id="navbar1_dropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Account&nbsp;</a>
+              <div class="dropdown-menu" aria-labelledby="navbar1_dropdown">
+                <a class="dropdown-item" href="/login" dmx-show="(conn_layout_whoami.data.identity &lt; 1)">Login</a>
+                <a class="dropdown-item" href="#" dmx-on:click="run({'bootbox.confirm':{name:'logout',message:'Are you sure you want to logout?',title:'Logout?',buttons:{confirm:{label:'Yes! Log me out.'},cancel:{label:'No! Take me back.'}},then:{steps:[{serverConnect:{name:'sc',outputType:'object',url:'/api/registration/logout',site:'communityweb'}},{run:{outputType:'text',action:`browser1.goto(\'/\')`}}]}}})" dmx-show="(conn_layout_whoami.data.identity &gt; 0)">Logout</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#">My Account</a>
+              </div>
+            </div>
+            <a class="nav-item nav-link disabled" href="#">Disabled</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+  <div is="dmx-view" id="content">
+    <%- await include(content, locals); %>
+  </div>
+  <script src="/bootstrap/5/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

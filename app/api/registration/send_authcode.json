@@ -113,6 +113,7 @@
       "toName": "{{query_authcode.first_name+' '+query_authcode.last_name}}",
       "toEmail": "{{query_authcode.email}}",
       "body": "Your Authorization code is: {{query_authcode.authcode}}"
-    }
+    },
+    "disabled": true
   }
 ]
