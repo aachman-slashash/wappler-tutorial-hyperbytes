@@ -1,0 +1,118 @@
+[
+  {
+    "name": "identity",
+    "module": "auth",
+    "action": "identify",
+    "options": {
+      "provider": "commweb"
+    },
+    "output": true,
+    "meta": []
+  },
+  {
+    "name": "query_authcode",
+    "module": "dbconnector",
+    "action": "single",
+    "options": {
+      "connection": "db",
+      "sql": {
+        "type": "select",
+        "columns": [
+          {
+            "table": "user",
+            "column": "authcode"
+          },
+          {
+            "table": "user",
+            "column": "first_name"
+          },
+          {
+            "table": "user",
+            "column": "last_name"
+          },
+          {
+            "table": "user",
+            "column": "email"
+          }
+        ],
+        "params": [
+          {
+            "operator": "equal",
+            "type": "expression",
+            "name": ":P1",
+            "value": "{{identity}}",
+            "test": ""
+          }
+        ],
+        "table": {
+          "name": "user"
+        },
+        "primary": "user_id",
+        "joins": [],
+        "wheres": {
+          "condition": "AND",
+          "rules": [
+            {
+              "id": "user.user_id",
+              "field": "user.user_id",
+              "type": "double",
+              "operator": "equal",
+              "value": "{{identity}}",
+              "data": {
+                "table": "user",
+                "column": "user_id",
+                "type": "number",
+                "columnObj": {
+                  "type": "increments",
+                  "primary": true,
+                  "unique": false,
+                  "nullable": false,
+                  "name": "user_id"
+                }
+              },
+              "operation": "="
+            }
+          ],
+          "conditional": null,
+          "valid": true
+        },
+        "query": "select `authcode`, `first_name`, `last_name`, `email` from `user` where `user`.`user_id` = ?",
+        "orders": []
+      }
+    },
+    "output": true,
+    "meta": [
+      {
+        "type": "text",
+        "name": "authcode"
+      },
+      {
+        "type": "text",
+        "name": "first_name"
+      },
+      {
+        "type": "text",
+        "name": "last_name"
+      },
+      {
+        "type": "text",
+        "name": "email"
+      }
+    ],
+    "outputType": "object"
+  },
+  {
+    "name": "",
+    "module": "mail",
+    "action": "send",
+    "options": {
+      "instance": "smtp",
+      "subject": "Your Authorisation Code",
+      "fromName": " Website",
+      "fromEmail": "noreply@example.com",
+      "toName": "{{query_authcode.first_name+' '+query_authcode.last_name}}",
+      "toEmail": "{{query_authcode.email}}",
+      "body": "Your Authorization code is: {{query_authcode.authcode}}"
+    }
+  }
+]
