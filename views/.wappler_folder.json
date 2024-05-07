@@ -10,5 +10,9 @@
   "test.ejs": {
     "layoutPage": "main",
     "description": ""
+  },
+  "validate-account.ejs": {
+    "layoutPage": "main",
+    "description": ""
   }
 }

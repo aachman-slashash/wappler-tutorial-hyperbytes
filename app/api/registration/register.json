@@ -405,54 +405,6 @@
         "disabled": true
       },
       {
-        "name": "i_user_role",
-        "module": "dbupdater",
-        "action": "insert",
-        "options": {
-          "connection": "db",
-          "sql": {
-            "type": "insert",
-            "values": [
-              {
-                "table": "role",
-                "column": "user_id",
-                "type": "text",
-                "value": "{{i_user.identity}}"
-              },
-              {
-                "table": "role",
-                "column": "role",
-                "type": "text",
-                "value": "M"
-              }
-            ],
-            "table": "role",
-            "returning": "role_id",
-            "query": "insert into `role` (`role`, `user_id`) values (?, ?) returning `role_id`",
-            "params": [
-              {
-                "name": ":P1",
-                "type": "expression",
-                "value": "{{i_user.identity}}",
-                "test": ""
-              }
-            ]
-          }
-        },
-        "meta": [
-          {
-            "name": "identity",
-            "type": "text"
-          },
-          {
-            "name": "affected",
-            "type": "number"
-          }
-        ],
-        "output": false,
-        "disabled": true
-      },
-      {
         "name": "success",
         "module": "core",
         "action": "response",

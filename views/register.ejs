@@ -3,14 +3,14 @@
 <div is="dmx-browser" id="browser1"></div>
 <dmx-notifications id="notifies1"></dmx-notifications>
 <meta name="ac:route" content="/register">
-<div class="container">
-    <form id="register1" is="dmx-serverconnect-form" method="post" action="/api/registration/register" dmx-on:error="notifies1.danger('OOPS An Error Occured')" dmx-on:unauthorized="notifies1.warning('Unauthorised')" dmx-on:success="register1.reset();browser1.goto('/',true)">
+<div class="container mt-5">
+    <form id="register1" is="dmx-serverconnect-form" method="post" action="/api/registration/register" dmx-on:error="notifies1.danger('OOPS An Error Occured')" dmx-on:unauthorized="notifies1.warning('Unauthorised')" dmx-on:success="notifies1.success('Success');browser1.goto('/validate-account',true,'Validate your account')">
 
 
         <input id="hp_product_id" name="product_id" class="form-control" type="hidden"><input id="hp_product_name" name="product_name" type="hidden" class="form-control" dmx-bind:value="conn_getcode.data.regcode">
         <div class="row justify-content-center">
 
-            <div class="col-12 col-md-8 col-lg-8 col-xl-6">
+            <div class="col-12 col-md-8 col-lg-8 col-xl-6 bg-light rounded-2 border rounded border-success border-2">
                 <div class="row">
                     <div class="col text-center">
                         <h1>Register</h1>
@@ -51,8 +51,8 @@
 
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col"><button id="register1_submit" class="btn mt-4 text-light bg-primary btn-primary" type="submit">Register</button></div>
+                <div class="row pb-3">
+                    <div class="col"><button id="register1_submit" class="btn text-light bg-primary btn-primary mt-4" type="submit">Register</button></div>
                 </div>
             </div>
         </div>
