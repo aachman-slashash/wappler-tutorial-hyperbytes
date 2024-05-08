@@ -50,7 +50,7 @@
         "module": "core",
         "action": "condition",
         "options": {
-          "if": "{{urlsplit[1]!='api'}}",
+          "if": "{{urlsplit[1]!='api'&&urlsplit[1]!='cwadmin'}}",
           "then": {
             "steps": [
               {

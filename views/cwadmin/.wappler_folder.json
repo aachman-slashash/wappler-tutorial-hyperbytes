@@ -2,5 +2,9 @@
   "adminhome.ejs": {
     "layoutPage": "admin",
     "description": ""
+  },
+  "seo.ejs": {
+    "layoutPage": "admin",
+    "description": ""
   }
 }

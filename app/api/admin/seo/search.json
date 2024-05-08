@@ -44,13 +44,49 @@
                 "column": "*"
               }
             ],
-            "params": [],
+            "params": [
+              {
+                "operator": "contains",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{$_GET.filter}}",
+                "test": ""
+              }
+            ],
             "table": {
               "name": "seo"
             },
             "primary": "seo_id",
             "joins": [],
-            "query": "select * from `seo`"
+            "query": "select * from `seo` where `seo`.`pagename` like ?",
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "seo.pagename",
+                  "field": "seo.pagename",
+                  "type": "string",
+                  "operator": "contains",
+                  "value": "{{$_GET.filter}}",
+                  "data": {
+                    "table": "seo",
+                    "column": "pagename",
+                    "type": "text",
+                    "columnObj": {
+                      "type": "string",
+                      "maxLength": 255,
+                      "primary": false,
+                      "unique": false,
+                      "nullable": true,
+                      "name": "pagename"
+                    }
+                  },
+                  "operation": "LIKE"
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            }
           }
         },
         "output": true,
