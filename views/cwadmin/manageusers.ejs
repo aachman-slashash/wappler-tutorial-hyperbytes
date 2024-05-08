@@ -79,7 +79,7 @@
                         </tbody>
                     </table>
                 </div>
-                <form id="add_role_form" is="dmx-serverconnect-form" method="post" action="/api/admin/role/create" dmx-on:success="notifies1.success('Role added successfully');conn_user_role.load({user_id: conn_single_user.data.query.user_id})">
+                <form id="add_role_form" is="dmx-serverconnect-form" method="post" action="/api/admin/role/create" dmx-on:success="notifies1.success('Role added successfully');conn_user_role.load({user_id: conn_single_user.data.query.user_id})" dmx-on:error="notifies1.danger('ERROR ERROR')" dmx-on:forbidden="notifies1.warning(lastError.response)">
                     <input id="hidden_user_id_input" name="user_id" class="form-control" dmx-bind:value="conn_user_role.data.query[0].user_id" type="hidden" readonly="true">
                     <div class="form-group mb-3">
                         <label for="select1" class="form-label">Select role</label>
