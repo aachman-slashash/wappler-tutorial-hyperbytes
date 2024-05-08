@@ -1,0 +1,70 @@
+<!-- Wappler include head-page="layouts/admin" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="page_content" appConnect="local" components="{dmxBootstrap5TableGenerator:{}}" -->
+<meta name="ac:route" content="/cwadmin/page_content">
+
+<dmx-serverconnect id="conn_all_page_types" url="/api/page_content/all_page_types"></dmx-serverconnect>
+<dmx-serverconnect id="conn_get_pagedata" url="/api/page_content/get_pagedata" dmx-param:pagetype="select_pagetype.value"></dmx-serverconnect>
+<div class="container-fluid mt-5">
+
+    <div class="row">
+        <div class="offset-lg-2 col-lg-8">
+            <select id="select_pagetype" class="form-select" name="pagetype" dmx-bind:options="conn_all_page_types.data.query" optiontext="role_name" optionvalue="role">
+            </select>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col">
+            <div class="table-responsive">
+                <table class="table table-striped table-hover table-sm">
+                    <thead>
+                        <tr>
+                            <th scope="row"></th>
+                            <th>Page content</th>
+                            <th>Title</th>
+                            <th>Description</th>
+                            <th>Online</th>
+                            <th>Date created</th>
+                            <th>Date modified</th>
+                            <th>Event start</th>
+                            <th>Lat</th>
+                            <th>Lng</th>
+                            <th>Geo</th>
+                            <th>Page type</th>
+                            <th>Event end</th>
+                            <th>Creator</th>
+                            <th>Last editor</th>
+                            <th>Created by first name</th>
+                            <th>Created by last name</th>
+                            <th>Last edited by first name</th>
+                            <th>Last edited by last name</th>
+                        </tr>
+                    </thead>
+                    <tbody is="dmx-repeat" dmx-generator="bs5table" dmx-bind:repeat="conn_get_pagedata.data.query" id="tableRepeat2">
+                        <tr>
+                            <td>
+                                <button id="page_edit_btn" class="btn btn-success btn-sm"><i class="far fa-edit"></i></button>
+                            </td>
+                            <td dmx-text="page_content_id"></td>
+                            <td dmx-text="title"></td>
+                            <td dmx-text="description"></td>
+                            <td dmx-text="online"></td>
+                            <td dmx-text="date_created"></td>
+                            <td dmx-text="date_modified"></td>
+                            <td dmx-text="event_start"></td>
+                            <td dmx-text="lat"></td>
+                            <td dmx-text="lng"></td>
+                            <td dmx-text="geo"></td>
+                            <td dmx-text="page_type"></td>
+                            <td dmx-text="event_end"></td>
+                            <td dmx-text="creator_id"></td>
+                            <td dmx-text="last_editor_id"></td>
+                            <td dmx-text="created_by_first_name"></td>
+                            <td dmx-text="created_by_last_name"></td>
+                            <td dmx-text="last_edited_by_first_name"></td>
+                            <td dmx-text="last_edited_by_last_name"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

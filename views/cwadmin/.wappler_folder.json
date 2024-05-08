@@ -10,5 +10,9 @@
   "manageusers.ejs": {
     "layoutPage": "admin",
     "description": ""
+  },
+  "page_content.ejs": {
+    "layoutPage": "admin",
+    "description": ""
   }
 }
