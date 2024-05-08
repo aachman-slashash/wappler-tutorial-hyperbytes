@@ -1,4 +1,4 @@
-<!-- Wappler include head-page="layouts/admin" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="manageusers" appConnect="local" components="{dmxBootstrap5TableGenerator:{},dmxFormatter:{},dmxBootstrap5Modal:{},dmxNotifications:{}}" -->
+<!-- Wappler include head-page="layouts/admin" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="manageusers" appConnect="local" components="{dmxBootstrap5TableGenerator:{},dmxFormatter:{},dmxBootstrap5Modal:{},dmxNotifications:{},dmxBootbox5:{}}" -->
 <dmx-notifications id="notifies1"></dmx-notifications>
 <dmx-serverconnect id="conn_single_user" url="/api/admin/user/read"></dmx-serverconnect>
 <dmx-serverconnect id="conn_users" url="/api/admin/user/search" dmx-param:filter="user_search_input.value"></dmx-serverconnect>
@@ -50,7 +50,7 @@
     <div class="row">
         <div class="col">
             <div class="form-group mb-3 row">
-                <label for="user_search_input" class="col-sm-2 col-form-label">Search</label>
+                <label for="user_search_input" class="col-sm-2 col-form-label text-end">Search</label>
                 <div class="col-sm-10">
                     <input type="text" class="form-control" id="user_search_input" name="user_search_input" aria-describedby="input1_help" placeholder="Enter Keyword">
                 </div>
@@ -83,7 +83,7 @@
                                 <button id="role_edit_btn" class="btn btn-warning btn-sm w-100"><i class="fas fa-user-cog"></i></button>
                             </td>
                             <td>
-                                <button id="user_delete_btn" class="btn btn-danger btn-sm w-100"><i class="fas fa-trash-alt"></i></button>
+                                <button id="user_delete_btn" class="btn btn-danger btn-sm w-100" dmx-on:click="run([{run:{outputType:'text',action:`conn_single_user.load({user_id: user_id})`}},{'bootbox.confirm':{name:'confirm_delete_user',message:'Do you want to delete this user?',title:'Delete user?',buttons:{confirm:{label:'Yes! delete this user.',className:'btn-danger'},cancel:{label:'No! do not delete anything.'}},centerVertical:true,then:{steps:[{serverConnect:{name:'delete_user_action',outputType:'object',url:'/api/admin/user/delete',site:'communityweb',params:{user_id:`conn_single_user.data.query.user_id`}}},{run:{name:'notify_delete_success',outputType:'text',action:`notifies1.success(\'Deleted successfully\')`}},{run:{name:'refresh_list',outputType:'text',action:`conn_users.load({filter: user_search_input.value})`}}]}}}])"><i class="fas fa-trash-alt"></i></button>
                             </td>
                             <td dmx-text="user_id"></td>
                             <td dmx-text="first_name"></td>
