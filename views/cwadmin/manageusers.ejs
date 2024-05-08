@@ -1,7 +1,12 @@
-<!-- Wappler include head-page="layouts/admin" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="manageusers" appConnect="local" components="{dmxBootstrap5TableGenerator:{},dmxFormatter:{},dmxBootstrap5Modal:{},dmxNotifications:{},dmxBootbox5:{}}" -->
+<!-- Wappler include head-page="layouts/admin" bootstrap5="local" is="dmx-app" id="manageusers" appConnect="local" components="{dmxBootstrap5TableGenerator:{},dmxFormatter:{},dmxBootstrap5Modal:{},dmxNotifications:{},dmxBootbox5:{},dmxTyped:{}}" -->
+
+
 <dmx-notifications id="notifies1"></dmx-notifications>
-<dmx-serverconnect id="conn_single_user" url="/api/admin/user/read"></dmx-serverconnect>
+
 <dmx-serverconnect id="conn_users" url="/api/admin/user/search" dmx-param:filter="user_search_input.value"></dmx-serverconnect>
+<dmx-serverconnect id="conn_single_user" url="/api/admin/user/read"></dmx-serverconnect>
+<dmx-serverconnect id="conn_user_role" url="/api/admin/role/user_roles" dmx-param:user_id="conn_single_user.data.query.user_id" noload="true"></dmx-serverconnect>
+<dmx-serverconnect id="conn_all_roles" url="/api/admin/role/all_roles"></dmx-serverconnect>
 <div class="modal" id="model_edit_user" is="dmx-bs5-modal" tabindex="-1" dmx-on:hide-bs-modal="conn_users.load({})">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" role="document">
         <div class="modal-content">
@@ -44,6 +49,53 @@
         </div>
     </div>
 </div>
+<div class="modal" id="modal_edit_user_roles" is="dmx-bs5-modal" tabindex="-1">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit User Roles</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-bordered table-hover table-sm">
+                        <thead>
+                            <tr>
+                                <th>Role</th>
+                                <th>Role name</th>
+                                <th scope="row"></th>
+                            </tr>
+                        </thead>
+                        <tbody is="dmx-repeat" dmx-generator="bs5table" dmx-bind:repeat="conn_user_role.data.query" id="tableRepeat2">
+                            <tr>
+                                <td dmx-text="role"></td>
+                                <td dmx-text="role_name"></td>
+                                <td>
+                                    <button id="delete_user_role_btn" class="btn bg-danger btn-danger btn-sm w-100" dmx-on:click="run([{serverConnect:{name:'sc',outputType:'object',url:'/api/admin/role/delete',site:'communityweb',params:{role_id:`role_id`}}},{run:{outputType:'text',action:`conn_user_role.load({user_id: conn_single_user.data.query.user_id})`}},{run:{outputType:'text',action:`conn_user_role.load({user_id: conn_single_user.data.query.user_id})`}}])">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <form id="add_role_form" is="dmx-serverconnect-form" method="post" action="/api/admin/role/create" dmx-on:success="notifies1.success('Role added successfully');conn_user_role.load({user_id: conn_single_user.data.query.user_id})">
+                    <input id="hidden_user_id_input" name="user_id" class="form-control" dmx-bind:value="conn_user_role.data.query[0].user_id" type="hidden" readonly="true">
+                    <div class="form-group mb-3">
+                        <label for="select1" class="form-label">Select role</label>
+
+                        <select id="select1" class="form-select" dmx-bind:options="conn_all_roles.data.query" optiontext="role_name" optionvalue="role" name="role">
+                        </select>
+                    </div><button id="add_role_btn" class="btn btn-primary btn-sm mt-xxl-n2" type="submit">Add Role</button>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 <meta name="ac:route" content="/cwadmin/manageusers">
 
 <div class="mt-3 container-fluid">
@@ -80,7 +132,7 @@
                                 <button id="user_edit_btn" class="btn btn-success btn-sm w-100" dmx-on:click="conn_single_user.load({user_id: user_id});model_edit_user.show()"><i class="fas fa-edit"></i></button>
                             </td>
                             <td>
-                                <button id="role_edit_btn" class="btn btn-warning btn-sm w-100"><i class="fas fa-user-cog"></i></button>
+                                <button id="role_edit_btn" class="btn btn-warning btn-sm w-100" dmx-on:click="run([{run:{outputType:'text',action:`conn_single_user.load({user_id: user_id})`}},{run:{outputType:'text',action:`conn_user_role.load({user_id: user_id})`}},{run:{outputType:'text',action:`modal_edit_user_roles.show()`}}])"><i class="fas fa-user-cog"></i></button>
                             </td>
                             <td>
                                 <button id="user_delete_btn" class="btn btn-danger btn-sm w-100" dmx-on:click="run([{run:{outputType:'text',action:`conn_single_user.load({user_id: user_id})`}},{'bootbox.confirm':{name:'confirm_delete_user',message:'Do you want to delete this user?',title:'Delete user?',buttons:{confirm:{label:'Yes! delete this user.',className:'btn-danger'},cancel:{label:'No! do not delete anything.'}},centerVertical:true,then:{steps:[{serverConnect:{name:'delete_user_action',outputType:'object',url:'/api/admin/user/delete',site:'communityweb',params:{user_id:`conn_single_user.data.query.user_id`}}},{run:{name:'notify_delete_success',outputType:'text',action:`notifies1.success(\'Deleted successfully\')`}},{run:{name:'refresh_list',outputType:'text',action:`conn_users.load({filter: user_search_input.value})`}}]}}}])"><i class="fas fa-trash-alt"></i></button>

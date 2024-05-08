@@ -58,12 +58,6 @@
               "primary": false,
               "unique": false,
               "nullable": true
-            },
-            "db_edits": {
-              "type": "datetime"
-            },
-            "status": {
-              "modified": true
             }
           },
           "authcode": {
@@ -81,20 +75,10 @@
               "primary": false,
               "unique": false,
               "nullable": true
-            },
-            "db_edits": {
-              "useTz": false,
-              "type": "datetime"
-            },
-            "status": {
-              "modified": true
             }
           }
         },
-        "db": {},
-        "status": {
-          "children_modified": true
-        }
+        "db": {}
       },
       "role": {
         "columns": {
@@ -291,6 +275,37 @@
             }
           },
           "twitter_url": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          }
+        },
+        "db": {}
+      },
+      "authroles": {
+        "columns": {
+          "authrole_id": {
+            "db": {
+              "type": "increments",
+              "primary": true,
+              "unique": false,
+              "nullable": false
+            }
+          },
+          "role": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "role_name": {
             "db": {
               "type": "string",
               "maxLength": 255,
