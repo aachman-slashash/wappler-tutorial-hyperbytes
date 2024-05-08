@@ -1,4 +1,7 @@
 {
   "debug": true,
-  "secret": "a3PFkbGk4tNyrJq"
+  "secret": "a3PFkbGk4tNyrJq",
+  "env": {
+    "TZ": "Etc/UTC"
+  }
 }

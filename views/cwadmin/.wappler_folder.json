@@ -6,5 +6,9 @@
   "seo.ejs": {
     "layoutPage": "admin",
     "description": ""
+  },
+  "manageusers.ejs": {
+    "layoutPage": "admin",
+    "description": ""
   }
 }

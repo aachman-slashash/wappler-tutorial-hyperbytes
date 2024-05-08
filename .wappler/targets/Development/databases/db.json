@@ -58,6 +58,12 @@
               "primary": false,
               "unique": false,
               "nullable": true
+            },
+            "db_edits": {
+              "type": "datetime"
+            },
+            "status": {
+              "modified": true
             }
           },
           "authcode": {
@@ -75,10 +81,20 @@
               "primary": false,
               "unique": false,
               "nullable": true
+            },
+            "db_edits": {
+              "useTz": false,
+              "type": "datetime"
+            },
+            "status": {
+              "modified": true
             }
           }
         },
-        "db": {}
+        "db": {},
+        "status": {
+          "children_modified": true
+        }
       },
       "role": {
         "columns": {

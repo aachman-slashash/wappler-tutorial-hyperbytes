@@ -164,7 +164,7 @@
                         "table": "user",
                         "column": "validated",
                         "type": "datetime",
-                        "value": "{{NOW_UTC}}"
+                        "value": "{{NOW}}"
                       },
                       {
                         "table": "user",
@@ -198,7 +198,7 @@
                       {
                         "name": ":P1",
                         "type": "expression",
-                        "value": "{{NOW_UTC}}",
+                        "value": "{{NOW}}",
                         "test": ""
                       },
                       {

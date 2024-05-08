@@ -1,0 +1,59 @@
+[
+  {
+    "name": "",
+    "module": "auth",
+    "action": "restrict",
+    "options": {
+      "provider": "commweb",
+      "permissions": [
+        "Administrator"
+      ],
+      "loginUrl": "/login",
+      "forbiddenUrl": "/login"
+    }
+  },
+  {
+    "name": "delete",
+    "module": "dbupdater",
+    "action": "delete",
+    "options": {
+      "connection": "db",
+      "sql": {
+        "type": "delete",
+        "table": "role",
+        "wheres": {
+          "condition": "AND",
+          "rules": [
+            {
+              "id": "role_id",
+              "type": "double",
+              "operator": "equal",
+              "value": "{{$_POST.role_id}}",
+              "data": {
+                "column": "role_id"
+              },
+              "operation": "="
+            }
+          ]
+        },
+        "returning": "role_id",
+        "query": "delete from `role` where `role_id` = ?",
+        "params": [
+          {
+            "operator": "equal",
+            "type": "expression",
+            "name": ":P1",
+            "value": "{{$_POST.role_id}}",
+            "test": ""
+          }
+        ]
+      }
+    },
+    "meta": [
+      {
+        "name": "affected",
+        "type": "number"
+      }
+    ]
+  }
+]

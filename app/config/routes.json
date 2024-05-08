@@ -36,6 +36,11 @@
       "path": "/cwadmin/seo",
       "page": "cwadmin/seo",
       "layout": "admin"
+    },
+    {
+      "path": "/cwadmin/manageusers",
+      "page": "cwadmin/manageusers",
+      "layout": "admin"
     }
   ],
   "layouts": {
