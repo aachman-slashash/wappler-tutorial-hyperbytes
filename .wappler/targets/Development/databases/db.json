@@ -80,7 +80,10 @@
         },
         "db": {},
         "refs": {
-          "page_content_comment_reactions": "user_id"
+          "page_content_comment_reactions": "user_id",
+          "page_content": "last_editor_id",
+          "page_content_images": "creator_id",
+          "page_content_comments": "user_id"
         }
       },
       "role": {
@@ -320,114 +323,6 @@
         },
         "db": {}
       },
-      "page_content_images": {
-        "columns": {
-          "Image_id": {
-            "db": {
-              "type": "increments",
-              "primary": true,
-              "unique": false,
-              "nullable": false
-            }
-          },
-          "page_content_id": {
-            "db": {
-              "type": "reference",
-              "primary": false,
-              "unique": false,
-              "nullable": true,
-              "references": "page_content_id",
-              "inTable": "page_content",
-              "referenceType": "integer",
-              "onUpdate": "CASCADE",
-              "onDelete": "CASCADE"
-            }
-          },
-          "image_url": {
-            "db": {
-              "type": "string",
-              "maxLength": 255,
-              "primary": false,
-              "unique": false,
-              "nullable": true
-            }
-          },
-          "creator_id": {
-            "db": {
-              "type": "integer",
-              "primary": false,
-              "unique": false,
-              "nullable": true
-            }
-          }
-        },
-        "db": {},
-        "tablePrefix": "page_content_",
-        "parent": "page_content"
-      },
-      "page_content_comments": {
-        "columns": {
-          "comment_id": {
-            "db": {
-              "type": "increments",
-              "primary": true,
-              "unique": false,
-              "nullable": false
-            }
-          },
-          "page_content_id": {
-            "db": {
-              "type": "reference",
-              "primary": false,
-              "unique": false,
-              "nullable": true,
-              "references": "page_content_id",
-              "inTable": "page_content",
-              "referenceType": "integer",
-              "onUpdate": "CASCADE",
-              "onDelete": "CASCADE"
-            }
-          },
-          "comment": {
-            "db": {
-              "type": "text",
-              "primary": false,
-              "unique": false,
-              "nullable": true
-            }
-          },
-          "date_created": {
-            "db": {
-              "type": "datetime",
-              "primary": false,
-              "unique": false,
-              "nullable": true
-            }
-          },
-          "user_id": {
-            "db": {
-              "type": "integer",
-              "primary": false,
-              "unique": false,
-              "nullable": true
-            }
-          },
-          "authorised": {
-            "db": {
-              "type": "boolean",
-              "primary": false,
-              "unique": false,
-              "nullable": true
-            }
-          }
-        },
-        "db": {},
-        "tablePrefix": "page_content_",
-        "parent": "page_content",
-        "sub": {
-          "page_content_comment_reactions": "comment_id"
-        }
-      },
       "page_content_comment_reactions": {
         "columns": {
           "comment_id": {
@@ -554,6 +449,49 @@
               "unique": false,
               "nullable": true
             }
+          },
+          "page_type": {
+            "db": {
+              "type": "string",
+              "maxLength": 1,
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "event_end": {
+            "db": {
+              "type": "datetime",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "creator_id": {
+            "db": {
+              "type": "reference",
+              "primary": false,
+              "unique": false,
+              "nullable": true,
+              "references": "user_id",
+              "inTable": "user",
+              "referenceType": "integer",
+              "onUpdate": "NO ACTION",
+              "onDelete": "NO ACTION"
+            }
+          },
+          "last_editor_id": {
+            "db": {
+              "type": "reference",
+              "primary": false,
+              "unique": false,
+              "nullable": true,
+              "references": "user_id",
+              "inTable": "user",
+              "referenceType": "integer",
+              "onUpdate": "NO ACTION",
+              "onDelete": "NO ACTION"
+            }
           }
         },
         "db": {},
@@ -561,6 +499,124 @@
           "page_content_images": "page_content_id",
           "page_content_comments": "page_content_id"
         }
+      },
+      "page_content_images": {
+        "columns": {
+          "Image_id": {
+            "db": {
+              "type": "increments",
+              "primary": true,
+              "unique": false,
+              "nullable": false
+            }
+          },
+          "page_content_id": {
+            "db": {
+              "type": "reference",
+              "primary": false,
+              "unique": false,
+              "nullable": true,
+              "references": "page_content_id",
+              "inTable": "page_content",
+              "referenceType": "integer",
+              "onUpdate": "CASCADE",
+              "onDelete": "CASCADE"
+            }
+          },
+          "image_url": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "creator_id": {
+            "db": {
+              "type": "reference",
+              "primary": false,
+              "unique": false,
+              "nullable": true,
+              "references": "user_id",
+              "inTable": "user",
+              "referenceType": "integer",
+              "onUpdate": "NO ACTION",
+              "onDelete": "NO ACTION"
+            }
+          }
+        },
+        "db": {},
+        "tablePrefix": "page_content_",
+        "parent": "page_content"
+      },
+      "page_content_comments": {
+        "columns": {
+          "comment_id": {
+            "db": {
+              "type": "increments",
+              "primary": true,
+              "unique": false,
+              "nullable": false
+            }
+          },
+          "page_content_id": {
+            "db": {
+              "type": "reference",
+              "primary": false,
+              "unique": false,
+              "nullable": true,
+              "references": "page_content_id",
+              "inTable": "page_content",
+              "referenceType": "integer",
+              "onUpdate": "CASCADE",
+              "onDelete": "CASCADE"
+            }
+          },
+          "comment": {
+            "db": {
+              "type": "text",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "date_created": {
+            "db": {
+              "type": "datetime",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          },
+          "user_id": {
+            "db": {
+              "type": "reference",
+              "primary": false,
+              "unique": false,
+              "nullable": true,
+              "references": "user_id",
+              "inTable": "user",
+              "referenceType": "integer",
+              "onUpdate": "NO ACTION",
+              "onDelete": "NO ACTION"
+            }
+          },
+          "authorised": {
+            "db": {
+              "type": "boolean",
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
+          }
+        },
+        "db": {},
+        "tablePrefix": "page_content_",
+        "sub": {
+          "page_content_comment_reactions": "comment_id"
+        },
+        "parent": "page_content"
       }
     },
     "views": {}
