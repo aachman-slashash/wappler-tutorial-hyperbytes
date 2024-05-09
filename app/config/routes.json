@@ -51,6 +51,11 @@
       "path": "/local",
       "page": "local",
       "layout": "main"
+    },
+    {
+      "path": "/history",
+      "page": "history",
+      "layout": "main"
     }
   ],
   "layouts": {
