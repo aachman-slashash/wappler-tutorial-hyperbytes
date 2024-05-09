@@ -6,12 +6,15 @@
 <div class="container-fluid mt-5">
 
     <div class="row">
-        <div class="offset-lg-2 col-lg-8">
+        <div class="col-10 col-lg-8 offset-1">
             <select id="select_pagetype" class="form-select" name="pagetype" dmx-bind:options="conn_all_page_types.data.query" optiontext="role_name" optionvalue="role">
             </select>
         </div>
+        <div class="col-10 offset-1 col-lg-2 offset-lg-0 mt-2 mt-lg-0">
+            <button id="add_page_btn" class="btn w-100 btn-warning" dmx-on:click="run([{serverConnect:{name:'create_new_page',outputType:'object',url:'/api/page_content/new_page',site:'communityweb',params:{page_type:`select_pagetype.value`}}},{run:{outputType:'text',action:`conn_get_pagedata.load({pagetype: select_pagetype.value})`}}])">New Page</button>
+        </div>
     </div>
-    <div class="row mt-3">
+    <div class="row mt-3 border border-1">
         <div class="col">
             <div class="table-responsive">
                 <table class="table table-striped table-hover table-sm">

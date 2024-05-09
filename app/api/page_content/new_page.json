@@ -1,0 +1,137 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "page_type"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "",
+        "module": "auth",
+        "action": "restrict",
+        "options": {
+          "provider": "commweb",
+          "permissions": [
+            "Administrator"
+          ],
+          "loginUrl": "/login",
+          "forbiddenUrl": "/login"
+        }
+      },
+      {
+        "name": "identity",
+        "module": "auth",
+        "action": "identify",
+        "options": {
+          "provider": "commweb"
+        },
+        "output": false,
+        "meta": []
+      },
+      {
+        "name": "insert",
+        "module": "dbupdater",
+        "action": "insert",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "insert",
+            "values": [
+              {
+                "table": "page_content",
+                "column": "title",
+                "type": "text",
+                "value": "New Page"
+              },
+              {
+                "table": "page_content",
+                "column": "online",
+                "type": "boolean",
+                "value": "0"
+              },
+              {
+                "table": "page_content",
+                "column": "date_created",
+                "type": "datetime",
+                "value": "{{NOW}}"
+              },
+              {
+                "table": "page_content",
+                "column": "date_modified",
+                "type": "datetime",
+                "value": "{{NOW}}"
+              },
+              {
+                "table": "page_content",
+                "column": "page_type",
+                "type": "text",
+                "value": "{{$_GET.page_type}}"
+              },
+              {
+                "table": "page_content",
+                "column": "creator_id",
+                "type": "number",
+                "value": "{{identity}}"
+              },
+              {
+                "table": "page_content",
+                "column": "last_editor_id",
+                "type": "number",
+                "value": "{{identity}}"
+              }
+            ],
+            "table": "page_content",
+            "returning": "page_content_id",
+            "query": "insert into `page_content` (`creator_id`, `date_created`, `date_modified`, `last_editor_id`, `online`, `page_type`, `title`) values (?, ?, ?, ?, ?, ?, ?) returning `page_content_id`",
+            "params": [
+              {
+                "name": ":P1",
+                "type": "expression",
+                "value": "{{NOW}}",
+                "test": ""
+              },
+              {
+                "name": ":P2",
+                "type": "expression",
+                "value": "{{NOW}}",
+                "test": ""
+              },
+              {
+                "name": ":P3",
+                "type": "expression",
+                "value": "{{$_GET.page_type}}",
+                "test": ""
+              },
+              {
+                "name": ":P4",
+                "type": "expression",
+                "value": "{{identity}}",
+                "test": ""
+              },
+              {
+                "name": ":P5",
+                "type": "expression",
+                "value": "{{identity}}",
+                "test": ""
+              }
+            ]
+          }
+        },
+        "meta": [
+          {
+            "name": "identity",
+            "type": "text"
+          },
+          {
+            "name": "affected",
+            "type": "number"
+          }
+        ]
+      }
+    ]
+  }
+}
