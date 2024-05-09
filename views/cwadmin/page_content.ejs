@@ -1,8 +1,90 @@
-<!-- Wappler include head-page="layouts/admin" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="page_content" appConnect="local" components="{dmxBootstrap5TableGenerator:{}}" -->
+<!-- Wappler include head-page="layouts/admin" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="page_content" appConnect="local" components="{dmxBootstrap5TableGenerator:{},dmxBootstrap5Modal:{},dmxNotifications:{},dmxFormatter:{},dmxDatePicker:{}}" jquery_slim_35="cdn" moment_2="cdn" -->
+<dmx-notifications id="notifies1"></dmx-notifications>
 <meta name="ac:route" content="/cwadmin/page_content">
 
 <dmx-serverconnect id="conn_all_page_types" url="/api/page_content/all_page_types"></dmx-serverconnect>
 <dmx-serverconnect id="conn_get_pagedata" url="/api/page_content/get_pagedata" dmx-param:pagetype="select_pagetype.value"></dmx-serverconnect>
+<dmx-serverconnect id="conn_get_single_pagedata" url="/api/page_content/get_single_page" noload="true"></dmx-serverconnect>
+<div class="modal" id="modal_edit_page" is="dmx-bs5-modal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Page</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form is="dmx-serverconnect-form" id="page_edit_form" method="post" action="/api/page_content/edit_page" dmx-generator="bootstrap5" dmx-form-type="horizontal" dmx-populate="conn_get_single_pagedata.data.query" dmx-on:error="notifies1.danger('Error: '+lastError.response)" dmx-on:success="notifies1.success('Saved successfully ');page_edit_form.reset();modal_edit_page.hide();conn_get_pagedata.load({pagetype: select_pagetype.value})">
+                    <div class="form-group mb-3 row">
+                        <label for="inp_page_content_id" class="col-sm-2 col-form-label">Page content</label>
+                        <div class="col-sm-10">
+                            <input type="number" class="form-control" id="inp_page_content_id" name="page_content_id" dmx-bind:value="conn_get_single_pagedata.data.query.page_content_id" aria-describedby="inp_page_content_id_help" placeholder="Enter Page content" dmxorgdomid="d211" readonly="true">
+                        </div>
+                    </div>
+                    <div class="form-group mb-3 row">
+                        <label for="inp_title" class="col-sm-2 col-form-label">Title</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="inp_title" name="title" dmx-bind:value="conn_get_single_pagedata.data.query.title" aria-describedby="inp_title_help" placeholder="Enter Title" dmxorgdomid="d215">
+                        </div>
+                    </div>
+                    <div class="form-group mb-3 row">
+                        <label for="inp_description" class="col-sm-2 col-form-label">Description</label>
+                        <div class="col-sm-10">
+                            <textarea id="inp_description" name="description" dmx-bind:value="conn_get_single_pagedata.data.query.description" class="form-control" dmxorgdomid="d219"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group mb-3 row">
+                        <label for="inp_event_start" class="col-sm-2 col-form-label">Event start</label>
+                        <div class="col-sm-10">
+                            <input class="form-control" id="inp_event_start" name="event_start" dmx-bind:value="conn_get_single_pagedata.data.query.event_start.formatDate('yyyy-MM-ddTHH:mm')" aria-describedby="inp_event_start_help" placeholder="Enter Event start" dmxorgdomid="d229" is="dmx-date-picker" timepicker="" use24hours="true">
+                        </div>
+                    </div>
+                    <div class="form-group mb-3 row">
+                        <label for="inp_event_end" class="col-sm-2 col-form-label">Event end</label>
+                        <div class="col-sm-10">
+                            <input class="form-control" id="inp_event_end" name="event_end" dmx-bind:value="conn_get_single_pagedata.data.query.event_end.formatDate('yyyy-MM-ddTHH:mm')" aria-describedby="inp_event_end_help" placeholder="Enter Event end" dmxorgdomid="d251" type="text" is="dmx-date-picker" timepicker="" use24hours="true">
+                        </div>
+                    </div>
+                    <div class="form-group mb-3 row">
+                        <label for="inp_lat" class="col-sm-2 col-form-label">Lat</label>
+                        <div class="col-sm-10">
+                            <input type="number" class="form-control" id="inp_lat" name="lat" dmx-bind:value="conn_get_single_pagedata.data.query.lat" aria-describedby="inp_lat_help" placeholder="Enter Lat" dmxorgdomid="d233">
+                        </div>
+                    </div>
+                    <div class="form-group mb-3 row">
+                        <label for="inp_lng" class="col-sm-2 col-form-label">Lng</label>
+                        <div class="col-sm-10">
+                            <input type="number" class="form-control" id="inp_lng" name="lng" dmx-bind:value="conn_get_single_pagedata.data.query.lng" aria-describedby="inp_lng_help" placeholder="Enter Lng" dmxorgdomid="d237">
+                        </div>
+                    </div>
+                    <div class="form-group mb-3 row">
+                        <legend class="col-sm-2 col-form-label">Geo</legend>
+                        <div class="col-sm-10">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="1" id="inp_geo" name="geo" dmxorgdomid="d242" dmx-bind:checked="conn_get_single_pagedata.data.query.geo">
+                                <label class="form-check-label" for="inp_geo">Geo</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group mb-3 row">
+                        <legend class="col-sm-2 col-form-label">Online</legend>
+                        <div class="col-sm-10">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="1" id="inp_online" name="online" dmxorgdomid="d224" dmx-bind:checked="conn_get_single_pagedata.data.query.online">
+                                <label class="form-check-label" for="inp_online">Online</label>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" form="page_edit_form">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="container-fluid mt-5">
 
     <div class="row">
@@ -44,20 +126,20 @@
                     <tbody is="dmx-repeat" dmx-generator="bs5table" dmx-bind:repeat="conn_get_pagedata.data.query" id="tableRepeat2">
                         <tr>
                             <td>
-                                <button id="page_edit_btn" class="btn btn-success btn-sm"><i class="far fa-edit"></i></button>
+                                <button id="page_edit_btn" class="btn btn-success btn-sm" dmx-on:click="conn_get_single_pagedata.load({page_content_id: page_content_id});modal_edit_page.show()"><i class="far fa-edit"></i></button>
                             </td>
                             <td dmx-text="page_content_id"></td>
                             <td dmx-text="title"></td>
                             <td dmx-text="description"></td>
                             <td dmx-text="online"></td>
-                            <td dmx-text="date_created"></td>
-                            <td dmx-text="date_modified"></td>
-                            <td dmx-text="event_start"></td>
+                            <td dmx-text="date_created.formatDate('yyyy-MM-dd HH:mm:ss')"></td>
+                            <td dmx-text="date_modified.formatDate('yyyy-MM-dd HH:mm:ss')"></td>
+                            <td dmx-text="event_start.formatDate('yyyy-MM-dd HH:mm')"></td>
                             <td dmx-text="lat"></td>
                             <td dmx-text="lng"></td>
                             <td dmx-text="geo"></td>
                             <td dmx-text="page_type"></td>
-                            <td dmx-text="event_end"></td>
+                            <td dmx-text="event_end.formatDate('yyyy-MM-dd HH:mm')"></td>
                             <td dmx-text="creator_id"></td>
                             <td dmx-text="last_editor_id"></td>
                             <td dmx-text="created_by_first_name"></td>

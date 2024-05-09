@@ -1,0 +1,146 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "page_content_id"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "",
+        "module": "auth",
+        "action": "restrict",
+        "options": {
+          "provider": "commweb",
+          "permissions": [
+            "Administrator"
+          ],
+          "loginUrl": "/login",
+          "forbiddenUrl": "/login"
+        }
+      },
+      {
+        "name": "query",
+        "module": "dbconnector",
+        "action": "single",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "select",
+            "columns": [
+              {
+                "table": "page_content",
+                "column": "*"
+              }
+            ],
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{$_GET.page_content_id}}",
+                "test": ""
+              }
+            ],
+            "table": {
+              "name": "page_content"
+            },
+            "primary": "page_content_id",
+            "joins": [],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "page_content.page_content_id",
+                  "field": "page_content.page_content_id",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{$_GET.page_content_id}}",
+                  "data": {
+                    "table": "page_content",
+                    "column": "page_content_id",
+                    "type": "number",
+                    "columnObj": {
+                      "type": "increments",
+                      "primary": true,
+                      "unique": false,
+                      "nullable": false,
+                      "name": "page_content_id"
+                    }
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "select * from `page_content` where `page_content`.`page_content_id` = ?"
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "type": "number",
+            "name": "page_content_id"
+          },
+          {
+            "type": "text",
+            "name": "title"
+          },
+          {
+            "type": "text",
+            "name": "description"
+          },
+          {
+            "type": "boolean",
+            "name": "online"
+          },
+          {
+            "type": "datetime",
+            "name": "date_created"
+          },
+          {
+            "type": "datetime",
+            "name": "date_modified"
+          },
+          {
+            "type": "datetime",
+            "name": "event_start"
+          },
+          {
+            "type": "number",
+            "name": "lat"
+          },
+          {
+            "type": "number",
+            "name": "lng"
+          },
+          {
+            "type": "boolean",
+            "name": "geo"
+          },
+          {
+            "type": "text",
+            "name": "page_type"
+          },
+          {
+            "type": "datetime",
+            "name": "event_end"
+          },
+          {
+            "type": "number",
+            "name": "creator_id"
+          },
+          {
+            "type": "number",
+            "name": "last_editor_id"
+          }
+        ],
+        "outputType": "object"
+      }
+    ]
+  }
+}
