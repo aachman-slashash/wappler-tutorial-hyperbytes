@@ -1,0 +1,81 @@
+{
+  "meta": {
+    "options": {
+      "linkedFile": "/views/cwadmin/page_content.ejs",
+      "linkedForm": "upload_image_form"
+    },
+    "$_POST": [
+      {
+        "type": "text",
+        "fieldName": "page_comtent_id",
+        "name": "page_comtent_id"
+      },
+      {
+        "type": "file",
+        "fieldName": "Image",
+        "name": "Image",
+        "sub": [
+          {
+            "name": "name",
+            "type": "text"
+          },
+          {
+            "name": "type",
+            "type": "text"
+          },
+          {
+            "name": "size",
+            "type": "number"
+          },
+          {
+            "name": "error",
+            "type": "text"
+          }
+        ],
+        "outputType": "file"
+      }
+    ]
+  },
+  "exec": {
+    "steps": {
+      "name": "upload",
+      "module": "upload",
+      "action": "upload",
+      "options": {
+        "fields": "{{$_POST.Image}}",
+        "path": "/public/uploads/page_images/{{$_POST.page_comtent_id}}",
+        "replaceSpace": true,
+        "asciiOnly": true,
+        "replaceDiacritics": true
+      },
+      "meta": [
+        {
+          "name": "name",
+          "type": "text"
+        },
+        {
+          "name": "path",
+          "type": "text"
+        },
+        {
+          "name": "url",
+          "type": "text"
+        },
+        {
+          "name": "type",
+          "type": "text"
+        },
+        {
+          "name": "size",
+          "type": "text"
+        },
+        {
+          "name": "error",
+          "type": "number"
+        }
+      ],
+      "outputType": "file",
+      "output": true
+    }
+  }
+}
