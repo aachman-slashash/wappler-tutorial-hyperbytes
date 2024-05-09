@@ -77,7 +77,27 @@
               "conditional": null,
               "valid": true
             },
-            "query": "select * from `page_content` where `page_content`.`page_content_id` = ?"
+            "query": "select * from `page_content` where `page_content`.`page_content_id` = ?",
+            "sub": {
+              "images": {
+                "type": "select",
+                "table": {
+                  "name": "page_content_images",
+                  "alias": "images"
+                },
+                "key": "page_content_id",
+                "columns": [
+                  {
+                    "table": "images",
+                    "column": "*"
+                  }
+                ],
+                "params": [],
+                "primary": "Image_id",
+                "joins": [],
+                "query": "select * from `page_content_images` as `images`"
+              }
+            }
           }
         },
         "output": true,
@@ -137,6 +157,28 @@
           {
             "type": "number",
             "name": "last_editor_id"
+          },
+          {
+            "name": "images",
+            "type": "array",
+            "sub": [
+              {
+                "type": "number",
+                "name": "Image_id"
+              },
+              {
+                "type": "number",
+                "name": "page_content_id"
+              },
+              {
+                "type": "text",
+                "name": "image_url"
+              },
+              {
+                "type": "number",
+                "name": "creator_id"
+              }
+            ]
           }
         ],
         "outputType": "object"

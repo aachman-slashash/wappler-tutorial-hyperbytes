@@ -33,11 +33,52 @@
           }
         ],
         "outputType": "file"
+      },
+      {
+        "type": "array",
+        "name": "record",
+        "sub": [
+          {
+            "type": "number",
+            "name": "$_POST"
+          },
+          {
+            "type": "text",
+            "name": "name"
+          },
+          {
+            "type": "number",
+            "name": "identity"
+          }
+        ]
       }
     ]
   },
   "exec": {
     "steps": [
+      {
+        "name": "",
+        "module": "auth",
+        "action": "restrict",
+        "options": {
+          "provider": "commweb",
+          "permissions": [
+            "Administrator"
+          ],
+          "loginUrl": "/login",
+          "forbiddenUrl": "/login"
+        }
+      },
+      {
+        "name": "identity",
+        "module": "auth",
+        "action": "identify",
+        "options": {
+          "provider": "commweb"
+        },
+        "output": true,
+        "meta": []
+      },
       {
         "name": "upload",
         "module": "upload",
@@ -147,6 +188,70 @@
                   "format": "auto"
                 },
                 "output": true
+              },
+              {
+                "name": "insert",
+                "module": "dbupdater",
+                "action": "insert",
+                "options": {
+                  "connection": "db",
+                  "sql": {
+                    "type": "insert",
+                    "values": [
+                      {
+                        "table": "page_content_images",
+                        "column": "page_content_id",
+                        "type": "number",
+                        "value": "{{$_POST.page_comtent_id}}"
+                      },
+                      {
+                        "table": "page_content_images",
+                        "column": "image_url",
+                        "type": "text",
+                        "value": "{{name}}"
+                      },
+                      {
+                        "table": "page_content_images",
+                        "column": "creator_id",
+                        "type": "number",
+                        "value": "{{identity}}"
+                      }
+                    ],
+                    "table": "page_content_images",
+                    "returning": "Image_id",
+                    "query": "insert into `page_content_images` (`creator_id`, `image_url`, `page_content_id`) values (?, ?, ?)",
+                    "params": [
+                      {
+                        "name": ":P1",
+                        "type": "expression",
+                        "value": "{{$_POST.page_comtent_id}}",
+                        "test": ""
+                      },
+                      {
+                        "name": ":P2",
+                        "type": "expression",
+                        "value": "{{name}}",
+                        "test": ""
+                      },
+                      {
+                        "name": ":P3",
+                        "type": "expression",
+                        "value": "{{identity}}",
+                        "test": ""
+                      }
+                    ]
+                  }
+                },
+                "meta": [
+                  {
+                    "name": "identity",
+                    "type": "text"
+                  },
+                  {
+                    "name": "affected",
+                    "type": "number"
+                  }
+                ]
               }
             ]
           }

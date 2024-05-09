@@ -93,20 +93,30 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="upload_image_form" is="dmx-serverconnect-form" method="post" action="/api/page_content/images/upload" dmx-on:success="notifies1.success('Uploaded successfully');upload_image_form.reset();edit_images.hide()" dmx-on:error="notifies1.danger('ERROR ERROR')">
-                    <div class="form-group mb-3 row">
-                        <label for="page_comtent_id" class="col-sm-2 col-form-label"></label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" id="page_comtent_id" name="page_comtent_id" aria-describedby="input1_help" placeholder="Enter some text" dmx-bind:value="conn_get_single_pagedata.data.query.page_content_id" readonly="true">
-                        </div>
+                <div class="row mb-3" is="dmx-repeat" id="image_display" dmx-bind:repeat="conn_get_single_pagedata.data.query.images" key="Image_id">
+                    <div class="col-2">
+                        <img dmx-bind:src="'/uploads/page_images/'+conn_get_single_pagedata.data.query.page_content_id+'/cover/'+image_url" class="img-fluid img-thumbnail">
                     </div>
-                    <div class="form-group mb-3 row">
-                        <label for="image_inp" class="col-sm-2 col-form-label">Image upload</label>
-                        <div class="col-sm-10">
-                            <input type="file" class="form-control" name="Image" aria-describedby="input2_help" multiple="true" is="dmx-dropzone" accept=".jpg,.jpeg,.png,.gif">
-                        </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <form id="upload_image_form" is="dmx-serverconnect-form" method="post" action="/api/page_content/images/upload" dmx-on:success="notifies1.success('Uploaded successfully');upload_image_form.reset();edit_images.hide();conn_get_single_pagedata.load({page_content_id: conn_get_single_pagedata.data.query.page_content_id})" dmx-on:error="notifies1.danger('ERROR ERROR')">
+                            <div class="form-group mb-3 row">
+                                <label for="page_comtent_id" class="col-sm-2 col-form-label"></label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="page_comtent_id" name="page_comtent_id" aria-describedby="input1_help" placeholder="Enter some text" dmx-bind:value="conn_get_single_pagedata.data.query.page_content_id" readonly="true">
+                                </div>
+                            </div>
+                            <div class="form-group mb-3 row">
+                                <label for="image_inp" class="col-sm-2 col-form-label">Image upload</label>
+                                <div class="col-sm-10">
+                                    <input type="file" class="form-control" name="Image" aria-describedby="input2_help" multiple="true" is="dmx-dropzone" accept=".jpg,.jpeg,.png,.gif">
+                                </div>
+                            </div>
+                        </form>
                     </div>
-                </form>
+                </div>
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
