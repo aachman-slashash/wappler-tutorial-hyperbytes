@@ -1,0 +1,492 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "sort"
+      },
+      {
+        "type": "text",
+        "name": "dir"
+      },
+      {
+        "type": "text",
+        "name": "pagetype"
+      }
+    ]
+  },
+  "exec": {
+    "steps": {
+      "name": "query",
+      "module": "dbconnector",
+      "action": "select",
+      "options": {
+        "connection": "db",
+        "sql": {
+          "type": "select",
+          "columns": [
+            {
+              "table": "page_content",
+              "column": "*"
+            },
+            {
+              "table": "page_creator",
+              "column": "first_name",
+              "alias": "created_by_first_name"
+            },
+            {
+              "table": "page_creator",
+              "column": "last_name",
+              "alias": "created_by_last_name"
+            },
+            {
+              "table": "last_editor",
+              "column": "first_name",
+              "alias": "last_edited_by_first_name"
+            },
+            {
+              "table": "last_editor",
+              "column": "last_name",
+              "alias": "last_edited_by_last_name"
+            }
+          ],
+          "params": [
+            {
+              "operator": "equal",
+              "type": "expression",
+              "name": ":P1",
+              "value": "{{$_GET.pagetype}}",
+              "test": ""
+            }
+          ],
+          "table": {
+            "name": "page_content"
+          },
+          "primary": "page_content_id",
+          "joins": [
+            {
+              "table": "user",
+              "column": "*",
+              "alias": "page_creator",
+              "type": "INNER",
+              "clauses": {
+                "condition": "AND",
+                "rules": [
+                  {
+                    "table": "page_creator",
+                    "column": "user_id",
+                    "operator": "equal",
+                    "operation": "=",
+                    "value": {
+                      "table": "page_content",
+                      "column": "creator_id"
+                    }
+                  }
+                ]
+              },
+              "primary": "user_id"
+            },
+            {
+              "table": "user",
+              "column": "*",
+              "alias": "last_editor",
+              "type": "INNER",
+              "clauses": {
+                "condition": "AND",
+                "rules": [
+                  {
+                    "table": "last_editor",
+                    "column": "user_id",
+                    "operator": "equal",
+                    "operation": "=",
+                    "value": {
+                      "table": "page_content",
+                      "column": "last_editor_id"
+                    }
+                  }
+                ]
+              },
+              "primary": "user_id"
+            }
+          ],
+          "sub": {
+            "images": {
+              "type": "select",
+              "table": {
+                "name": "page_content_images",
+                "alias": "images"
+              },
+              "key": "page_content_id",
+              "columns": [
+                {
+                  "table": "images",
+                  "column": "Image_id"
+                },
+                {
+                  "table": "images",
+                  "column": "image_url"
+                },
+                {
+                  "table": "image_creator",
+                  "column": "first_name",
+                  "alias": "image_creator_first_name"
+                },
+                {
+                  "table": "image_creator",
+                  "column": "last_name",
+                  "alias": "image_creator_last_name"
+                }
+              ],
+              "params": [],
+              "primary": "Image_id",
+              "joins": [
+                {
+                  "table": "user",
+                  "column": "*",
+                  "alias": "image_creator",
+                  "type": "INNER",
+                  "clauses": {
+                    "condition": "AND",
+                    "rules": [
+                      {
+                        "table": "image_creator",
+                        "column": "user_id",
+                        "operator": "equal",
+                        "operation": "=",
+                        "value": {
+                          "table": "images",
+                          "column": "creator_id"
+                        }
+                      }
+                    ]
+                  },
+                  "primary": "user_id"
+                }
+              ],
+              "query": "select `images`.`Image_id`, `images`.`image_url`, `image_creator`.`first_name` as `image_creator_first_name`, `image_creator`.`last_name` as `image_creator_last_name` from `page_content_images` as `images` inner join `user` as `image_creator` on `image_creator`.`user_id` = `images`.`creator_id` order by `images`.`order` ASC",
+              "orders": [
+                {
+                  "table": "images",
+                  "column": "order",
+                  "direction": "ASC"
+                }
+              ]
+            },
+            "comments": {
+              "type": "select",
+              "table": {
+                "name": "page_content_comments",
+                "alias": "comments"
+              },
+              "key": "page_content_id",
+              "columns": [
+                {
+                  "table": "comments",
+                  "column": "comment_id"
+                },
+                {
+                  "table": "comments",
+                  "column": "comment"
+                },
+                {
+                  "table": "comments",
+                  "column": "date_created"
+                },
+                {
+                  "table": "comments",
+                  "column": "authorised"
+                },
+                {
+                  "table": "commentor",
+                  "column": "first_name",
+                  "alias": "commentor_first_name"
+                },
+                {
+                  "table": "commentor",
+                  "column": "last_name",
+                  "alias": "commentor_last_name"
+                }
+              ],
+              "params": [],
+              "primary": "comment_id",
+              "joins": [
+                {
+                  "table": "user",
+                  "column": "*",
+                  "alias": "commentor",
+                  "type": "INNER",
+                  "clauses": {
+                    "condition": "AND",
+                    "rules": [
+                      {
+                        "table": "commentor",
+                        "column": "user_id",
+                        "operator": "equal",
+                        "operation": "=",
+                        "value": {
+                          "table": "comments",
+                          "column": "user_id"
+                        }
+                      }
+                    ]
+                  },
+                  "primary": "user_id"
+                }
+              ],
+              "sub": {
+                "reactions": {
+                  "type": "select",
+                  "table": {
+                    "name": "page_content_comment_reactions",
+                    "alias": "reactions"
+                  },
+                  "key": "comment_id",
+                  "columns": [
+                    {
+                      "table": "reactions",
+                      "column": "reaction"
+                    },
+                    {
+                      "table": "reactor",
+                      "column": "first_name",
+                      "alias": "reactor_first_name"
+                    },
+                    {
+                      "table": "reactor",
+                      "column": "last_name",
+                      "alias": "reactor_last_name",
+                      "aggregate": ""
+                    }
+                  ],
+                  "params": [],
+                  "joins": [
+                    {
+                      "table": "user",
+                      "column": "*",
+                      "alias": "reactor",
+                      "type": "INNER",
+                      "clauses": {
+                        "condition": "AND",
+                        "rules": [
+                          {
+                            "table": "reactor",
+                            "column": "user_id",
+                            "operator": "equal",
+                            "operation": "=",
+                            "value": {
+                              "table": "reactions",
+                              "column": "user_id"
+                            }
+                          }
+                        ]
+                      },
+                      "primary": "user_id"
+                    }
+                  ],
+                  "query": "select `reactions`.`reaction`, `reactor`.`first_name` as `reactor_first_name`, `reactor`.`last_name` as `reactor_last_name` from `page_content_comment_reactions` as `reactions` inner join `user` as `reactor` on `reactor`.`user_id` = `reactions`.`user_id`"
+                }
+              },
+              "query": "select `comments`.`comment_id`, `comments`.`comment`, `comments`.`date_created`, `comments`.`authorised`, `commentor`.`first_name` as `commentor_first_name`, `commentor`.`last_name` as `commentor_last_name` from `page_content_comments` as `comments` inner join `user` as `commentor` on `commentor`.`user_id` = `comments`.`user_id`"
+            }
+          },
+          "query": "select `page_content`.*, `page_creator`.`first_name` as `created_by_first_name`, `page_creator`.`last_name` as `created_by_last_name`, `last_editor`.`first_name` as `last_edited_by_first_name`, `last_editor`.`last_name` as `last_edited_by_last_name` from `page_content` inner join `user` as `page_creator` on `page_creator`.`user_id` = `page_content`.`creator_id` inner join `user` as `last_editor` on `last_editor`.`user_id` = `page_content`.`last_editor_id` where `page_content`.`page_type` = ? and `page_content`.`online` = ?",
+          "wheres": {
+            "condition": "AND",
+            "rules": [
+              {
+                "id": "page_content.page_type",
+                "field": "page_content.page_type",
+                "type": "string",
+                "operator": "equal",
+                "value": "{{$_GET.pagetype}}",
+                "data": {
+                  "table": "page_content",
+                  "column": "page_type",
+                  "type": "text",
+                  "columnObj": {
+                    "type": "string",
+                    "maxLength": 1,
+                    "primary": false,
+                    "unique": false,
+                    "nullable": true,
+                    "name": "page_type"
+                  }
+                },
+                "operation": "="
+              },
+              {
+                "id": "page_content.online",
+                "field": "page_content.online",
+                "type": "boolean",
+                "operator": "equal",
+                "value": true,
+                "data": {
+                  "table": "page_content",
+                  "column": "online",
+                  "type": "boolean",
+                  "columnObj": {
+                    "type": "boolean",
+                    "primary": false,
+                    "unique": false,
+                    "nullable": true,
+                    "name": "online"
+                  }
+                },
+                "operation": "="
+              }
+            ],
+            "conditional": null,
+            "valid": true
+          },
+          "orders": []
+        }
+      },
+      "output": true,
+      "meta": [
+        {
+          "type": "number",
+          "name": "page_content_id"
+        },
+        {
+          "type": "text",
+          "name": "title"
+        },
+        {
+          "type": "text",
+          "name": "description"
+        },
+        {
+          "type": "boolean",
+          "name": "online"
+        },
+        {
+          "type": "datetime",
+          "name": "date_created"
+        },
+        {
+          "type": "datetime",
+          "name": "date_modified"
+        },
+        {
+          "type": "datetime",
+          "name": "event_start"
+        },
+        {
+          "type": "number",
+          "name": "lat"
+        },
+        {
+          "type": "number",
+          "name": "lng"
+        },
+        {
+          "type": "boolean",
+          "name": "geo"
+        },
+        {
+          "type": "text",
+          "name": "page_type"
+        },
+        {
+          "type": "datetime",
+          "name": "event_end"
+        },
+        {
+          "type": "number",
+          "name": "creator_id"
+        },
+        {
+          "type": "number",
+          "name": "last_editor_id"
+        },
+        {
+          "type": "text",
+          "name": "created_by_first_name"
+        },
+        {
+          "type": "text",
+          "name": "created_by_last_name"
+        },
+        {
+          "type": "text",
+          "name": "last_edited_by_first_name"
+        },
+        {
+          "type": "text",
+          "name": "last_edited_by_last_name"
+        },
+        {
+          "name": "images",
+          "type": "array",
+          "sub": [
+            {
+              "type": "number",
+              "name": "Image_id"
+            },
+            {
+              "type": "text",
+              "name": "image_url"
+            },
+            {
+              "type": "text",
+              "name": "image_creator_first_name"
+            },
+            {
+              "type": "text",
+              "name": "image_creator_last_name"
+            }
+          ]
+        },
+        {
+          "name": "comments",
+          "type": "array",
+          "sub": [
+            {
+              "type": "number",
+              "name": "comment_id"
+            },
+            {
+              "type": "text",
+              "name": "comment"
+            },
+            {
+              "type": "datetime",
+              "name": "date_created"
+            },
+            {
+              "type": "boolean",
+              "name": "authorised"
+            },
+            {
+              "type": "text",
+              "name": "commentor_first_name"
+            },
+            {
+              "type": "text",
+              "name": "commentor_last_name"
+            },
+            {
+              "name": "reactions",
+              "type": "array",
+              "sub": [
+                {
+                  "type": "text",
+                  "name": "reaction"
+                },
+                {
+                  "type": "text",
+                  "name": "reactor_first_name"
+                },
+                {
+                  "type": "text",
+                  "name": "reactor_last_name"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "outputType": "array"
+    }
+  }
+}
