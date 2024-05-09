@@ -1,0 +1,21 @@
+<!-- Wappler include head-page="layouts/main" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="show_business" appConnect="local" components="{dmxLightbox:{}}" -->
+<dmx-lightbox id="lightbox1"></dmx-lightbox>
+<dmx-serverconnect id="conn_single_business" url="/api/page_content_public/get_single_page_public" dmx-param:page_content_id="query.page_content_id"></dmx-serverconnect>
+<div class="container mt-5">
+    <div class="row">
+        <div class="col">
+            <h1>{{conn_single_business.data.query.title}}</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <p dmx-html="conn_single_business.data.query.description">A nice paragraph</p>
+        </div>
+    </div>
+    <div class="row" is="dmx-repeat" id="repeat1" dmx-bind:repeat="conn_single_business.data.query.images">
+        <div class="col-12 col-sm-6 col-lg-4 col-xxl-2 col-xl-3 text-xl-center">
+            <a dmx-bind:href="'/uploads/page_images/'+page_content_id+'/full/'+image_url" dmx-lightbox="" class="stretched-link"><img class="img-fluid img-thumbnail" dmx-bind:src="'/uploads/page_images/'+page_content_id+'/cover/'+image_url"></a>
+        </div>
+    </div>
+</div>
+<meta name="ac:route" content="/show_business/:page_content_id">

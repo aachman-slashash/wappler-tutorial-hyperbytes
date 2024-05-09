@@ -26,5 +26,13 @@
   "history.ejs": {
     "layoutPage": "main",
     "description": ""
+  },
+  "businesses.ejs": {
+    "layoutPage": "main",
+    "description": ""
+  },
+  "show_business.ejs": {
+    "layoutPage": "main",
+    "description": ""
   }
 }

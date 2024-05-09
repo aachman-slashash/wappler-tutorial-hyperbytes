@@ -56,6 +56,16 @@
       "path": "/history",
       "page": "history",
       "layout": "main"
+    },
+    {
+      "path": "/businesses",
+      "page": "businesses",
+      "layout": "main"
+    },
+    {
+      "path": "/show_business/:page_content_id",
+      "page": "show_business",
+      "layout": "main"
     }
   ],
   "layouts": {

@@ -1,0 +1,23 @@
+<!-- Wappler include head-page="layouts/main" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="businesses" appConnect="local" components="{dmxFormatter:{}}" -->
+
+<dmx-serverconnect id="conn_businesses" url="/api/page_content_public/get_pagedata_public" dmx-param:pagetype="'B'"></dmx-serverconnect>
+<dmx-serverconnect id="conn_single_business" url="/api/page_content_public/get_single_page_public" dmx-param:pagetype="'B'" noload="true"></dmx-serverconnect>
+<div class="container mt-5">
+    <div class="row">
+        <div class="col">
+            <h1>Business Index</h1>
+        </div>
+    </div>
+    <div class="row" is="dmx-repeat" id="repeat1" dmx-bind:repeat="conn_businesses.data.query" key="page_content_id">
+        <div class="col-12 col-sm-6 col-lg-4 col-xxl-3 mb-4">
+            <div class="card h-100 mb-0" dmx-on:click="browser1.goto('/show_business/'+page_content_id)" style="cursor: pointer;">
+                <img class="card-img-top" alt="Card image cap" dmx-bind:src="'/uploads/page_images/'+page_content_id+'/full/'+images[0].image_url">
+                <div class="card-body">
+                    <h4 class="card-title">{{title}}</h4>
+                    <p class="card-text" dmx-html="description.trunc(100, 'true', '...')">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<meta name="ac:route" content="/businesses">
