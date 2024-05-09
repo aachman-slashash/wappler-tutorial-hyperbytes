@@ -7,6 +7,10 @@
     "connection": {
       "filename": "/communityweb.sqlite3"
     },
-    "tz": "utc"
-  }
+    "tz": "utc",
+    "meta": {}
+  },
+  "actionFilePath": "file:///C:/Users/slash/OneDrive/Desktop/WProjects/communityweb/app/modules/connections/db.json",
+  "serverType": "node",
+  "fileName": "db.json"
 }

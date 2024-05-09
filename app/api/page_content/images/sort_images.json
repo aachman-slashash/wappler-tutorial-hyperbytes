@@ -1,0 +1,141 @@
+{
+  "meta": {
+    "options": {
+      "linkedFile": "/views/cwadmin/page_content.ejs",
+      "linkedForm": "form_update_image_order"
+    },
+    "$_POST": [
+      {
+        "type": "array",
+        "name": "formRepeat1",
+        "sub": [
+          {
+            "type": "text",
+            "fieldName": "formRepeat1[{{$index}}][iamge_id]",
+            "name": "iamge_id"
+          },
+          {
+            "type": "text",
+            "fieldName": "formRepeat1[{{$index}}][order]",
+            "name": "order"
+          }
+        ]
+      },
+      {
+        "type": "array",
+        "name": "record",
+        "sub": [
+          {
+            "type": "number",
+            "name": "order"
+          },
+          {
+            "type": "number",
+            "name": "iamge_id"
+          }
+        ]
+      }
+    ]
+  },
+  "exec": {
+    "steps": {
+      "name": "record_repeat",
+      "module": "core",
+      "action": "repeat",
+      "options": {
+        "repeat": "{{$_POST.formRepeat1}}",
+        "outputFields": [],
+        "exec": {
+          "steps": {
+            "name": "record_update",
+            "module": "dbupdater",
+            "action": "update",
+            "options": {
+              "connection": "db",
+              "sql": {
+                "type": "update",
+                "values": [
+                  {
+                    "table": "page_content_images",
+                    "column": "order",
+                    "type": "number",
+                    "value": "{{order}}"
+                  }
+                ],
+                "table": "page_content_images",
+                "wheres": {
+                  "condition": "AND",
+                  "rules": [
+                    {
+                      "id": "Image_id",
+                      "field": "Image_id",
+                      "type": "double",
+                      "operator": "equal",
+                      "value": "{{iamge_id}}",
+                      "data": {
+                        "column": "Image_id"
+                      },
+                      "operation": "="
+                    }
+                  ],
+                  "conditional": null,
+                  "valid": true
+                },
+                "returning": "Image_id",
+                "query": "update `page_content_images` set `order` = ? where `Image_id` = ?",
+                "params": [
+                  {
+                    "name": ":P1",
+                    "type": "expression",
+                    "value": "{{order}}",
+                    "test": ""
+                  },
+                  {
+                    "operator": "equal",
+                    "type": "expression",
+                    "name": ":P2",
+                    "value": "{{iamge_id}}",
+                    "test": ""
+                  }
+                ]
+              }
+            },
+            "meta": [
+              {
+                "name": "affected",
+                "type": "number"
+              }
+            ]
+          }
+        }
+      },
+      "meta": [
+        {
+          "name": "$index",
+          "type": "number"
+        },
+        {
+          "name": "$number",
+          "type": "number"
+        },
+        {
+          "name": "$name",
+          "type": "text"
+        },
+        {
+          "name": "$value",
+          "type": "object"
+        },
+        {
+          "name": "iamge_id",
+          "type": "text"
+        },
+        {
+          "name": "order",
+          "type": "text"
+        }
+      ],
+      "outputType": "array"
+    }
+  }
+}

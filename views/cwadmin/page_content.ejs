@@ -1,4 +1,4 @@
-<!-- Wappler include head-page="layouts/admin" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="page_content" appConnect="local" components="{dmxBootstrap5TableGenerator:{},dmxBootstrap5Modal:{},dmxNotifications:{},dmxFormatter:{},dmxDatePicker:{},dmxDropzone:{},dmxValidator:{}}" jquery_slim_35="cdn" moment_2="cdn" -->
+<!-- Wappler include head-page="layouts/admin" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="page_content" appConnect="local" components="{dmxBootstrap5TableGenerator:{},dmxBootstrap5Modal:{},dmxNotifications:{},dmxFormatter:{},dmxDatePicker:{},dmxDropzone:{},dmxValidator:{},dmxSummernote:{},dmxSummernoteFileUpload:{},dmxFormRepeat:{}}" jquery_slim_35="cdn" moment_2="cdn" -->
 <dmx-notifications id="notifies1"></dmx-notifications>
 <meta name="ac:route" content="/cwadmin/page_content">
 
@@ -8,7 +8,7 @@
 <div class="modal" id="modal_edit_page" is="dmx-bs5-modal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" role="document">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header bg-success text-light">
                 <h5 class="modal-title">Edit Page</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
@@ -29,20 +29,21 @@
                     <div class="form-group mb-3 row">
                         <label for="inp_description" class="col-sm-2 col-form-label">Description</label>
                         <div class="col-sm-10">
-                            <textarea id="inp_description" name="description" dmx-bind:value="conn_get_single_pagedata.data.query.description" class="form-control" dmxorgdomid="d219"></textarea>
+                            <!-- <textarea id="inp_description" name="description" dmx-bind:value="conn_get_single_pagedata.data.query.description" class="form-control" dmxorgdomid="d219"></textarea> -->
+                            <textarea id="inp_description" name="description" is="dmx-summernote" dmx-bind:toolbar="[['style',['style']],['font',['bold','underline','clear']],['fontname',['fontname']],['color',['color']],['para',['ul','ol','paragraph']],['table',['table']],['insert',['link','imageFile']],['view',['fullscreen','codeview','help']]]" dmx-bind:value="conn_get_single_pagedata.data.query.description" dmx-plugin:file="{imageUrl:'/api/page_content/images/summernote_upload'}"></textarea>
                         </div>
                     </div>
 
                     <div class="form-group mb-3 row">
                         <label for="inp_event_start" class="col-sm-2 col-form-label">Event start</label>
                         <div class="col-sm-10">
-                            <input class="form-control" id="inp_event_start" name="event_start" dmx-bind:value="conn_get_single_pagedata.data.query.event_start.formatDate('yyyy-MM-ddTHH:mm')" aria-describedby="inp_event_start_help" placeholder="Enter Event start" dmxorgdomid="d229" is="dmx-date-picker" timepicker="" use24hours="true">
+                            <input class="form-control" id="inp_event_start" name="event_start" dmx-bind:value="conn_get_single_pagedata.data.query.event_start" aria-describedby="inp_event_start_help" placeholder="Enter Event start" dmxorgdomid="d229" is="dmx-date-picker" timepicker="" use24hours="true">
                         </div>
                     </div>
                     <div class="form-group mb-3 row">
                         <label for="inp_event_end" class="col-sm-2 col-form-label">Event end</label>
                         <div class="col-sm-10">
-                            <input class="form-control" id="inp_event_end" name="event_end" dmx-bind:value="conn_get_single_pagedata.data.query.event_end.formatDate('yyyy-MM-ddTHH:mm')" aria-describedby="inp_event_end_help" placeholder="Enter Event end" dmxorgdomid="d251" type="text" is="dmx-date-picker" timepicker="" use24hours="true">
+                            <input class="form-control" id="inp_event_end" name="event_end" dmx-bind:value="conn_get_single_pagedata.data.query.event_end" aria-describedby="inp_event_end_help" placeholder="Enter Event end" dmxorgdomid="d251" type="text" is="dmx-date-picker" timepicker="" use24hours="true">
                         </div>
                     </div>
                     <div class="form-group mb-3 row">
@@ -93,9 +94,23 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div class="row mb-3" is="dmx-repeat" id="image_display" dmx-bind:repeat="conn_get_single_pagedata.data.query.images" key="Image_id">
-                    <div class="col-2">
-                        <img dmx-bind:src="'/uploads/page_images/'+conn_get_single_pagedata.data.query.page_content_id+'/cover/'+image_url" class="img-fluid img-thumbnail">
+                <div class="row">
+                    <div class="col">
+                        <div class="d-flex">
+
+
+
+                            <form id="form_update_image_order" is="dmx-serverconnect-form" method="post" dmx-on:success="notifies1.success('Saved')" action="/api/page_content/images/sort_images">
+                                <div is="dmx-form-repeat" id="formRepeat1" dmx-bind:items="conn_get_single_pagedata.data.query.images" sortable="true" handle=".handle" animation="500">
+                                    <div class="d-flex">
+
+                                        <button id="sorter_handle" class="btn btn-lg handle"><i class="fas fa-bars"></i></button><img dmx-bind:src="'/uploads/page_images/'+conn_get_single_pagedata.data.query.page_content_id+'/cover/'+image_url">
+                                        <input id="image_id" name="iamge_id" type="hidden" class="form-control" readonly="true" dmx-bind:value="Image_id">
+                                        <input id="image_order" name="order" type="hidden" class="form-control" dmx-bind:value="$index">
+                                    </div>
+                                </div><button id="save_sort_btn" class="btn bg-primary" type="submit">Save Order</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
                 <div class="row">
@@ -174,7 +189,7 @@
                             </td>
                             <td dmx-text="page_content_id"></td>
                             <td dmx-text="title"></td>
-                            <td dmx-text="description"></td>
+                            <td dmx-html="description"></td>
                             <td dmx-text="online"></td>
                             <td dmx-text="date_created.formatDate('yyyy-MM-dd HH:mm:ss')"></td>
                             <td dmx-text="date_modified.formatDate('yyyy-MM-dd HH:mm:ss')"></td>

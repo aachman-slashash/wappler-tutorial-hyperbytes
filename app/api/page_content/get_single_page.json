@@ -95,7 +95,14 @@
                 "params": [],
                 "primary": "Image_id",
                 "joins": [],
-                "query": "select * from `page_content_images` as `images`"
+                "query": "select * from `page_content_images` as `images` order by `order` ASC",
+                "orders": [
+                  {
+                    "table": "images",
+                    "column": "order",
+                    "direction": "ASC"
+                  }
+                ]
               }
             }
           }
@@ -177,6 +184,10 @@
               {
                 "type": "number",
                 "name": "creator_id"
+              },
+              {
+                "type": "number",
+                "name": "order"
               }
             ]
           }
