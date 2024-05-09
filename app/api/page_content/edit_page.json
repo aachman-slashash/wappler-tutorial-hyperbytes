@@ -89,7 +89,7 @@
                 "table": "page_content",
                 "column": "online",
                 "type": "boolean",
-                "value": "{{$_POST.online}}"
+                "value": "{{$_POST.online.default(0)}}"
               },
               {
                 "table": "page_content",
@@ -119,7 +119,7 @@
                 "table": "page_content",
                 "column": "geo",
                 "type": "boolean",
-                "value": "{{$_POST.geo}}"
+                "value": "{{$_POST.geo.default(0)}}"
               },
               {
                 "table": "page_content",
@@ -168,7 +168,7 @@
               {
                 "name": ":P3",
                 "type": "expression",
-                "value": "{{$_POST.online}}",
+                "value": "{{$_POST.online.default(0)}}",
                 "test": ""
               },
               {
@@ -198,7 +198,7 @@
               {
                 "name": ":P8",
                 "type": "expression",
-                "value": "{{$_POST.geo}}",
+                "value": "{{$_POST.geo.default(0)}}",
                 "test": ""
               },
               {
